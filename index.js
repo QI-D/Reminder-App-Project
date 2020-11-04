@@ -1,37 +1,42 @@
 const express = require("express");
-const app = express();
-const path = require("path");
 const ejsLayouts = require("express-ejs-layouts");
-const reminderController = require("./controller/reminder_controller");
 
-app.use(express.static(path.join(__dirname, "public")));
+// express is going to return back to us a web server
+const app = express();
+const reminderController = require("./controllers/reminder_controller");
 
+app.use(express.static(__dirname + "/public"));
 app.use(express.urlencoded({ extended: false }));
-
 app.use(ejsLayouts);
-
 app.set("view engine", "ejs");
 
-// Site Routes start here
+//Case 1: user goes to localhost: 8080 -> information about site, marketing, login page ...
+app.get("/", (req, res) => {
+  res.send("Go to http://localhost:3000/reminder");
+});
 
-// Get a list of all reminders
-app.get("/reminders", reminderController.list)
+//Case 2: User goes to Localhost:8080/reminder -> show a list of reminders
+app.get("/reminder", reminderController.list);
 
-// Create a Reminder
-app.get("/reminder/new", reminderController.new)
-app.post("/reminder/", reminderController.create)
+//Case 3: user goes to localhost:8080/reminder -> show a CREATE REMINDER RAGE
+app.get("/reminder/new", reminderController.new);
 
-// Show one single reminder
-app.get("/reminder/:id", reminderController.listOne)
+//Case 4: User SENDS NEW REMINDER DATA TO US (CREATING A REMINDER)
+app.post("/reminder", reminderController.create);
 
-// Edit a reminder
-app.get("/reminder/:id/edit", reminderController.edit) // Show the page to edit a reminder
-app.post("/reminder/update/:id", reminderController.update) // Edit the reminder
+// Case 5: User wants to see an individual reminder
+app.get("/reminder/:id", reminderController.listOne);
 
-// Delete a reminder
-app.post("/reminder/delete/:id", reminderController.delete)
+// Case 6 User wnats to EDIT an individual reminder
+app.get("/reminder/:id/edit", reminderController.edit);
 
+//Case 7: User clicks the update button from Case 6, and expects their reminder to be updated
+app.post("/reminder/update/:id", reminderController.update);
 
-app.listen(3000, function () {
-  console.log("Server running. Visit: localhost:3000/reminders in your browser 🚀");
+//Case 8: User clicks the delete button and we expect the reminder to be deleted
+app.post("/reminder/delete/:id", reminderController.delete);
+
+// web service request through port 3000
+app.listen(3000, () => {
+  console.log("Our server is running on http://localhost:3000/ 🚀");
 });
