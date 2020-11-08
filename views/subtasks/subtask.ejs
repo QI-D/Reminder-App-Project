@@ -1,0 +1,29 @@
+<div class="list-group subtasks">
+    <h5> 📜 Subtasks <a class="show--subtask" href="#">add ➕</a></h5>
+
+    <form action="/reminder/<%= reminderItem.id %>/subtask/update" method="POST" class="form--subtask" style="display: none;">
+        <div class="new--subtasks">
+            <label for="new--task">Create a New Subtask</label>
+            <input type="text" class="form-control" id="new--task" name="subtask__msg" placeholder="Subtask">
+        </div>
+        <div class="add--newtask">
+            <button type="submit" class="btn btn-primary ">add</button>
+        </div>
+    </form>
+    <%if (reminderItem.subtask == undefined ) { %>
+        <p>Click add to add more subtask...</p>
+      <% } else { %>
+        <% reminderItem.subtask.forEach((subtask)=> {%>
+            <form action="/reminder/<%= reminderItem.id %>/subtask/delete" method="POST">
+                <input type="hidden" name="id" value=<%=subtask.id%>>
+                <li class="subtasks-li list-group-item ">
+                    <input onChange="this.form.submit()" type="checkbox" id="subtask--id" name="iscompleted" value="true">
+                    <label for="subtask--id"><%= subtask.description %></label>
+                </li>
+            </form>
+        <% }) %>
+      <% } %>
+
+  </div>
+
+  <!-- /reminder/:id/subtask/update -->

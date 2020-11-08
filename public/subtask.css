@@ -1,0 +1,21 @@
+:root {
+  /* color */
+  --white: #fafafa;
+
+  /* size */
+  --margin: 5px;
+}
+
+body .container .list-group .subtasks-li {
+  margin-bottom: var(--margin);
+}
+
+.container .list-group .new--subtasks {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.container .list-group .add--newtask {
+  display: flex;
+  justify-content: flex-end;
+}

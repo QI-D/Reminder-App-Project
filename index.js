@@ -1,9 +1,11 @@
 const express = require("express");
 const ejsLayouts = require("express-ejs-layouts");
 
+const reminderController = require("./controllers/reminder_controller");
+
 // express is going to return back to us a web server
 const app = express();
-const reminderController = require("./controllers/reminder_controller");
+const subtaskApp = require("./subtask-routes.js");
 
 app.use(express.static(__dirname + "/public"));
 app.use(express.urlencoded({ extended: false }));
@@ -35,6 +37,14 @@ app.post("/reminder/update/:id", reminderController.update);
 
 //Case 8: User clicks the delete button and we expect the reminder to be deleted
 app.post("/reminder/delete/:id", reminderController.delete);
+
+//======= Subtask =============
+
+//Case 1: User wants to add subtasks
+subtaskApp.post(app);
+
+//Case 2: User wnats to delete subtasks
+subtaskApp.deletePost(app);
 
 // web service request through port 3000
 app.listen(3000, () => {
