@@ -6,6 +6,7 @@ const reminderController = require("./controllers/reminder_controller");
 // express is going to return back to us a web server
 const app = express();
 const subtaskApp = require("./subtask-routes.js");
+const timeApp = require("./time-routes");
 
 app.use(express.static(__dirname + "/public"));
 app.use(express.urlencoded({ extended: false }));
@@ -45,6 +46,12 @@ subtaskApp.post(app);
 
 //Case 2: User wnats to delete subtasks
 subtaskApp.deletePost(app);
+
+
+//===========time=============
+
+//Case:1: User add a reminder time
+timeApp.post(app);
 
 // web service request through port 3000
 app.listen(3000, () => {

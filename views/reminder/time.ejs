@@ -1,0 +1,9 @@
+<div class="container">
+    <h5 class="page-subheader">REMIND ME</h5>
+
+    <form action="/reminder/<%= reminderItem.id %>/time/update" method="POST">
+        <input oninput="this.form.submit()" type="datetime-local" class="form-control" name="time" value=<%= reminderItem.time %>>
+    </form>
+
+
+</div>
