@@ -1,9 +1,11 @@
 let Database = {
   cindy: {
     reminders: [],
+    psw: ""
   },
   alex: {
     reminders: [],
+    psw: ""
   },
 };
 

@@ -1,5 +1,6 @@
 const express = require("express");
 const ejsLayouts = require("express-ejs-layouts");
+const remindersController = require("./controllers/reminder_controller");
 
 const reminderController = require("./controllers/reminder_controller");
 
@@ -23,6 +24,10 @@ app.get("/reminder", reminderController.list);
 
 //Case 3: user goes to localhost:8080/reminder -> show a CREATE REMINDER RAGE
 app.get("/reminder/new", reminderController.new);
+
+app.get("/reminder/newuser", remindersController.signUpPage);
+
+app.post("/reminder/signUp", reminderController.signUp);
 
 //Case 4: User SENDS NEW REMINDER DATA TO US (CREATING A REMINDER)
 app.post("/reminder", reminderController.create);
