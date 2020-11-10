@@ -4,6 +4,8 @@
     <ul class="list-group">
       <li class="list-group-item">
         <h3><strong><%= reminderItem.title %>: </strong></h3>
+          <%- include ("./tags") %>
+
         <h4><%= reminderItem.description %></h4>
         <h4>Completed:
           <% if (reminderItem.completed == true) { %>

@@ -8,6 +8,7 @@ const reminderController = require("./controllers/reminder_controller");
 const app = express();
 const subtaskApp = require("./subtask-routes.js");
 const timeApp = require("./time-routes");
+const tagApp = require("./tag-routes");
 
 app.use(express.static(__dirname + "/public"));
 app.use(express.urlencoded({ extended: false }));
@@ -57,6 +58,14 @@ subtaskApp.deletePost(app);
 
 //Case:1: User add a reminder time
 timeApp.post(app);
+
+//===========tags=============
+
+//Case:1: User wants to add a tag
+tagApp.post(app);
+
+//Case 2: User wants to delete a tag
+tagApp.deletePost(app);
 
 // web service request through port 3000
 app.listen(3000, () => {
