@@ -26,23 +26,25 @@ app.get("/reminder", reminderController.list);
 //Case 3: user goes to localhost:8080/reminder -> show a CREATE REMINDER RAGE
 app.get("/reminder/new", reminderController.new);
 
-app.get("/reminder/newuser", remindersController.signUpPage);
-
-app.post("/reminder/signUp", reminderController.signUp);
-
 //Case 4: User SENDS NEW REMINDER DATA TO US (CREATING A REMINDER)
 app.post("/reminder", reminderController.create);
 
-// Case 5: User wants to see an individual reminder
+//Case 5: User wants to go to sign up page
+app.get("/reminder/newuser", remindersController.signUpPage);
+
+//Case 6: User create account with username and password
+app.post("/reminder/signUp", reminderController.signUp);
+
+// Case 7: User wants to see an individual reminder
 app.get("/reminder/:id", reminderController.listOne);
 
-// Case 6 User wnats to EDIT an individual reminder
+// Case 8 User wnats to EDIT an individual reminder
 app.get("/reminder/:id/edit", reminderController.edit);
 
-//Case 7: User clicks the update button from Case 6, and expects their reminder to be updated
+//Case 9: User clicks the update button from Case 6, and expects their reminder to be updated
 app.post("/reminder/update/:id", reminderController.update);
 
-//Case 8: User clicks the delete button and we expect the reminder to be deleted
+//Case 10: User clicks the delete button and we expect the reminder to be deleted
 app.post("/reminder/delete/:id", reminderController.delete);
 
 //======= Subtask =============
