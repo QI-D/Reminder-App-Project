@@ -9,6 +9,7 @@ const app = express();
 const subtaskApp = require("./subtask-routes.js");
 const timeApp = require("./time-routes");
 const tagApp = require("./tag-routes");
+const { loginPage } = require("./controllers/reminder_controller");
 
 app.use(express.static(__dirname + "/public"));
 app.use(express.urlencoded({ extended: false }));
@@ -30,21 +31,27 @@ app.get("/reminder/new", reminderController.new);
 app.post("/reminder", reminderController.create);
 
 //Case 5: User wants to go to sign up page
-app.get("/reminder/newuser", remindersController.signUpPage);
+app.get("/reminder/newuser", reminderController.signUpPage);
 
 //Case 6: User create account with username and password
 app.post("/reminder/signUp", reminderController.signUp);
 
-// Case 7: User wants to see an individual reminder
+//Case 7: User wants to go to login page
+app.get("/reminder/loginPage", reminderController.loginPage);
+
+//Case 8: User wants to login with username and password
+app.post("/reminder/login", reminderController.login);
+
+// Case 9: User wants to see an individual reminder
 app.get("/reminder/:id", reminderController.listOne);
 
-// Case 8 User wnats to EDIT an individual reminder
+// Case 10: User wnats to EDIT an individual reminder
 app.get("/reminder/:id/edit", reminderController.edit);
 
-//Case 9: User clicks the update button from Case 6, and expects their reminder to be updated
+//Case 11: User clicks the update button from Case 6, and expects their reminder to be updated
 app.post("/reminder/update/:id", reminderController.update);
 
-//Case 10: User clicks the delete button and we expect the reminder to be deleted
+//Case 12: User clicks the delete button and we expect the reminder to be deleted
 app.post("/reminder/delete/:id", reminderController.delete);
 
 //======= Subtask =============
@@ -71,5 +78,5 @@ tagApp.deletePost(app);
 
 // web service request through port 3000
 app.listen(3000, () => {
-  console.log("Our server is running on http://localhost:3000/ 🚀");
+  console.log("Our server is running on http://localhost:3000/reminder 🚀");
 });

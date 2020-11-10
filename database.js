@@ -1,7 +1,7 @@
 let Database = {
   cindy: {
     reminders: [],
-    psw: ""
+    psw: "cindy"
   },
   alex: {
     reminders: [],

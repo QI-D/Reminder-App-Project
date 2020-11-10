@@ -45,6 +45,30 @@ let remindersController = {
     }
   },
 
+  loginPage: function (req, res) {
+    res.render("reminder/loginPage");
+  },
+
+  login: function (req, res) {
+    username = req.body.username;
+    password = req.body.password;
+    
+    if (Database.hasOwnProperty(username)) {
+      if (Database[username].psw === password){
+        res.redirect("/reminder");
+        // res.redirect("/reminder/:username");
+      } else {
+        res.render("reminder/loginPage", {
+          err: "password is not correct"
+        })
+      }
+    } else {
+      res.render("reminder/loginPage", {
+        err: "The username does not exist"
+      })
+    }
+  },
+
   listOne: function (req, res) {
     let reminderToFind = req.params.id;
     let searchResult = Database.cindy.reminders.find((reminder) => {
