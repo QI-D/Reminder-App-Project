@@ -1,0 +1,26 @@
+<div class="tags-list">
+    <h5><a class="show-tag" href="#" >Tags add ➕</a></h5>
+
+    <%if (reminderItem.tag == undefined ) { %>
+        <p>Click add to add more tags<p>
+      <% } else { %>
+        <% reminderItem.tag.forEach((tag)=> {%>
+            <form style="display: inline-block;" action="/reminder/<%= reminderItem.id %>/tag/delete" method="POST">
+                <span style="font-size: small;" class="label label-primary"> <%= tag.name %>  <button type="submit" class="label label-info"  name="id" value=<%=tag.id%> >
+                      x
+                </button></span>
+            </form>
+        <% }) %>
+      <% } %>
+    
+    <form action="/reminder/<%= reminderItem.id %>/tag/add" method="POST" class="form-tag" style="display: none;">
+        <div class="new-tags">
+            <label for="new-tag"></label>
+            <input type="text" class="form-control" id="tag" name="tag_name" placeholder="Tag"><br>
+        </div>
+        <div class="add-btn">
+            <button type="submit" class="btn btn-primary">add</button>
+        </div>
+    </form>
+    
+  </div>
