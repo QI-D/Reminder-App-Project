@@ -6,7 +6,7 @@
       <% } else { %>
         <% reminderItem.tag.forEach((tag)=> {%>
             <form style="display: inline-block;" action="/reminder/<%= reminderItem.id %>/tag/delete" method="POST">
-                <span style="font-size: small;" class="label label-primary"> <%= tag.name %>  <button type="submit" class="label label-info"  name="id" value=<%=tag.id%> >
+                <span style="font-size: small;" class="badge badge-pill badge-primary"> <%= tag.name %>  <button type="submit" class="btn btn-primary btn-sm"  name="id" value=<%=tag.id%> >
                       x
                 </button></span>
             </form>

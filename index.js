@@ -1,17 +1,30 @@
-const express = require("express");
-const ejsLayouts = require("express-ejs-layouts");
-const remindersController = require("./controllers/reminder_controller");
+// const express = require("express");
+// const ejsLayouts = require("express-ejs-layouts");
 
-const reminderController = require("./controllers/reminder_controller");
+// const reminderController = require("./controllers/reminder_controller");
 
 // express is going to return back to us a web server
+// const app = express();
+// const subtaskApp = require("./subtask-routes.js");
+// const timeApp = require("./time-routes");
+// const tagApp = require("./tag-routes");
+
+// app.use(express.static(__dirname + "/public"));
+
+const express = require("express");
 const app = express();
+const path = require("path");
+const ejsLayouts = require("express-ejs-layouts");
+const reminderController = require("./controllers/reminder_controller");
+const authController = require("./controllers/auth_controller");
+
+// express is going to return back to us a web server
 const subtaskApp = require("./subtask-routes.js");
 const timeApp = require("./time-routes");
 const tagApp = require("./tag-routes");
 const { loginPage } = require("./controllers/reminder_controller");
 
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: false }));
 app.use(ejsLayouts);
 app.set("view engine", "ejs");
@@ -22,7 +35,7 @@ app.get("/", (req, res) => {
 });
 
 //Case 2: User goes to Localhost:8080/reminder -> show a list of reminders
-app.get("/reminder", reminderController.list);
+app.get("/reminders", reminderController.list);
 
 //Case 3: user goes to localhost:8080/reminder -> show a CREATE REMINDER RAGE
 app.get("/reminder/new", reminderController.new);
@@ -31,7 +44,7 @@ app.get("/reminder/new", reminderController.new);
 app.post("/reminder", reminderController.create);
 
 //Case 5: User wants to go to sign up page
-app.get("/reminder/newuser", reminderController.signUpPage);
+// app.get("/reminder/newuser", remindersController.signUpPage);
 
 //Case 6: User create account with username and password
 app.post("/reminder/signUp", reminderController.signUp);
@@ -53,6 +66,11 @@ app.post("/reminder/update/:id", reminderController.update);
 
 //Case 12: User clicks the delete button and we expect the reminder to be deleted
 app.post("/reminder/delete/:id", reminderController.delete);
+
+app.get("/register", authController.register);
+app.get("/login", authController.login);
+app.post("/register", authController.registerSubmit);
+app.post("/login", authController.loginSubmit);
 
 //======= Subtask =============
 
