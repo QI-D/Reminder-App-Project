@@ -1,14 +1,24 @@
 const Database = require("../database.js");
+const url = require("url");
+
 // exstract functions
 
 let remindersController = {
   list: function (req, res) {
+
+    // store the destination url in res.locals 
+    res.locals.url=req.url;
+
     res.render("reminder/index", {
       reminders: Database.cindy.reminders,
     }); // no need to user .ejs because we already specified
   },
 
   new: function (req, res) {
+
+    // store the destination url in res.locals
+    res.locals.url=req.url;
+
     res.render("reminder/create");
   },
 
@@ -20,7 +30,7 @@ let remindersController = {
       completed: false,
     };
     Database.cindy.reminders.push(reminder);
-    res.redirect("/reminder");
+    res.redirect("/reminders");
   },
 
   listOne: function (req, res) {
@@ -33,7 +43,7 @@ let remindersController = {
         reminderItem: searchResult,
       });
     } else {
-      res.redirect("/reminder");
+      res.redirect("/reminders");
     }
   },
 
@@ -68,7 +78,7 @@ let remindersController = {
       return reminder.id == deleteId;
     });
     Database.cindy.reminders.splice(idx, 1);
-    res.redirect("/reminder");
+    res.redirect("/reminders");
   },
 };
 
