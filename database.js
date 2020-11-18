@@ -1,10 +1,14 @@
 let Database = {
-  cindy: {
+  // cindy: {
+  "cindy@gmail.com": {
     reminders: [],
+    // em: "cindy@gmail.com",
     psw: "cindy"
   },
-  alex: {
+  // alex: {
+  "alex@outlook.com": {
     reminders: [],
+    // em: "",
     psw: ""
   },
 };

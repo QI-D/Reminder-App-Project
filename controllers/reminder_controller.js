@@ -10,7 +10,7 @@ let remindersController = {
     res.locals.url=req.url;
 
     res.render("reminder/index", {
-      reminders: Database.cindy.reminders,
+      reminders: Database["cindy@gmail.com"].reminders,
     }); // no need to user .ejs because we already specified
   },
 
@@ -24,64 +24,64 @@ let remindersController = {
 
   create: function (req, res) {
     let reminder = {
-      id: Database.cindy.reminders.length + 1,
+      id: Database["cindy@gmail.com"].reminders.length + 1,
       title: req.body.title,
       description: req.body.description,
       completed: false,
     };
-    Database.cindy.reminders.push(reminder);
+    Database["cindy@gmail.com"].reminders.push(reminder);
     res.redirect("/reminders");
   },
 
-  signUpPage: function (req, res) {
-    res.render("reminder/newuser");
-  },
+  // signUpPage: function (req, res) {
+  //   res.render("reminder/newuser");
+  // },
   
-  signUp: function (req, res) {
-    username = req.body.username;
-    psw = req.body.password;
+  // signUp: function (req, res) {
+  //   username = req.body.username;
+  //   psw = req.body.password;
     
-    if (!Database.hasOwnProperty(username)) {
-      Database[username] = {
-        reminders: [],
-        psw: ""
-      }
-      Database[username].psw = psw;
-      res.redirect("/reminders");
-    } else {
-      res.render("reminder/newuser", {
-        err: "username has been registered"
-      });
-    }
-  },
+  //   if (!Database.hasOwnProperty(username)) {
+  //     Database[username] = {
+  //       reminders: [],
+  //       psw: ""
+  //     }
+  //     Database[username].psw = psw;
+  //     res.redirect("/reminders");
+  //   } else {
+  //     res.render("reminder/newuser", {
+  //       err: "username has been registered"
+  //     });
+  //   }
+  // },
 
-  loginPage: function (req, res) {
-    res.render("reminder/loginPage");
-  },
+  // loginPage: function (req, res) {
+  //   res.render("reminder/loginPage");
+  // },
 
-  login: function (req, res) {
-    username = req.body.username;
-    password = req.body.password;
+  // login: function (req, res) {
+  //   username = req.body.username;
+  //   password = req.body.password;
     
-    if (Database.hasOwnProperty(username)) {
-      if (Database[username].psw === password){
-        res.redirect("/reminder");
-        // res.redirect("/reminder/:username");
-      } else {
-        res.render("reminder/loginPage", {
-          err: "password is not correct"
-        })
-      }
-    } else {
-      res.render("reminder/loginPage", {
-        err: "The username does not exist"
-      })
-    }
-  },
+  //   if (Database.hasOwnProperty(username)) {
+  //     if (Database[username].psw === password){
+  //       res.redirect("/reminder");
+  //       // res.redirect("/reminder/:username");
+  //     } else {
+  //       res.render("reminder/loginPage", {
+  //         err: "password is not correct"
+  //       })
+  //     }
+  //   } else {
+  //     res.render("reminder/loginPage", {
+  //       err: "The username does not exist"
+  //     })
+  //   }
+  // },
 
   listOne: function (req, res) {
     let reminderToFind = req.params.id;
-    let searchResult = Database.cindy.reminders.find((reminder) => {
+    let searchResult = Database["cindy@gmail.com"].reminders.find((reminder) => {
       return reminder.id == reminderToFind;
     });
     if (searchResult != undefined) {
@@ -95,7 +95,7 @@ let remindersController = {
 
   edit: function (req, res) {
     let reminderToFind = req.params.id;
-    let searchResult = Database.cindy.reminders.find((reminder) => {
+    let searchResult = Database["cindy@gmail.com"].reminders.find((reminder) => {
       return reminder.id == reminderToFind;
     });
     res.render("reminder/edit-reminder", {
@@ -111,19 +111,19 @@ let remindersController = {
       description: req.body.description,
       completed: isCompleted,
     };
-    let idx = Database.cindy.reminders.findIndex((reminder) => {
+    let idx = Database["cindy@gmail.com"].reminders.findIndex((reminder) => {
       return reminder.id == updateReminder.id;
     });
-    Database.cindy.reminders[idx] = updateReminder;
+    Database["cindy@gmail.com"].reminders[idx] = updateReminder;
     res.redirect("/reminder/" + req.body.id); // this should be routes in index.js with redirects
   },
 
   delete: function (req, res) {
     let deleteId = req.params.id;
-    let idx = Database.cindy.reminders.findIndex((reminder) => {
+    let idx = Database["cindy@gmail.com"].reminders.findIndex((reminder) => {
       return reminder.id == deleteId;
     });
-    Database.cindy.reminders.splice(idx, 1);
+    Database["cindy@gmail.com"].reminders.splice(idx, 1);
     res.redirect("/reminders");
   },
 

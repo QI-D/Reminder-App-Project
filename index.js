@@ -44,16 +44,16 @@ app.get("/reminder/new", reminderController.new);
 app.post("/reminder", reminderController.create);
 
 //Case 5: User wants to go to sign up page
-// app.get("/reminder/newuser", remindersController.signUpPage);
+// app.get("/reminder/register", authController.register);
 
-//Case 6: User create account with username and password
-app.post("/reminder/signUp", reminderController.signUp);
+// //Case 6: User create account with username and password
+// app.post("/reminder/signUp", authController.registerSubmit);
 
-//Case 7: User wants to go to login page
-app.get("/reminder/loginPage", reminderController.loginPage);
+// //Case 7: User wants to go to login page
+// app.get("/reminder/loginPage", authController.login);
 
-//Case 8: User wants to login with username and password
-app.post("/reminder/login", reminderController.login);
+// //Case 8: User wants to login with username and password
+// app.post("/reminder/login", authController.loginSubmit);
 
 // Case 9: User wants to see an individual reminder
 app.get("/reminder/:id", reminderController.listOne);
@@ -96,5 +96,5 @@ tagApp.deletePost(app);
 
 // web service request through port 3000
 app.listen(3000, () => {
-  console.log("Our server is running on http://localhost:3000/reminder 🚀");
+  console.log("Our server is running on http://localhost:3000/ 🚀");
 });
