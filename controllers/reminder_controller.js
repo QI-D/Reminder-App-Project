@@ -33,6 +33,28 @@ let remindersController = {
     res.redirect("/reminders");
   },
 
+  signUpPage: function (req, res) {
+    res.render("reminder/newuser");
+  },
+  
+  signUp: function (req, res) {
+    username = req.body.username;
+    psw = req.body.password;
+    
+    if (!Database.hasOwnProperty(username)) {
+      Database[username] = {
+        reminders: [],
+        psw: ""
+      }
+      Database[username].psw = psw;
+      res.redirect("/reminders");
+    } else {
+      res.render("reminder/newuser", {
+        err: "username has been registered"
+      });
+    }
+  },
+
   listOne: function (req, res) {
     let reminderToFind = req.params.id;
     let searchResult = Database.cindy.reminders.find((reminder) => {
@@ -80,6 +102,8 @@ let remindersController = {
     Database.cindy.reminders.splice(idx, 1);
     res.redirect("/reminders");
   },
+
+
 };
 
 module.exports = remindersController;
