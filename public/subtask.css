@@ -19,3 +19,10 @@ body .container .list-group .subtasks-li {
   display: flex;
   justify-content: flex-end;
 }
+
+.display__tag {
+  border-radius: 60%;
+  border-style: dotted;
+  border-width: 2px;
+  width: 5em;
+}

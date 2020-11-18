@@ -1,3 +1,5 @@
+const { MakeSubtask } = require("../make-data.js");
+
 const Database = require("../database.js");
 
 let subtaskController = {
@@ -14,17 +16,11 @@ let subtaskController = {
     // get spcific reminder
     let searchReminder = Database.cindy.reminders[searchResultID];
 
-    // if reminder does not have subtask property, then add "subtask"
-    if (!searchReminder.hasOwnProperty("subtask")) {
-      searchReminder.subtask = [];
-    }
-
     // subtask data strcuture
-    let newSubtask = {
-      id: searchReminder.subtask.length + 1,
-      description: subtaskMsg,
-      completed: false,
-    };
+    let newSubtask = new MakeSubtask(
+      searchReminder.subtask.length + 1,
+      subtaskMsg
+    );
 
     // add subtask to subtask lists for specific reminder
     searchReminder.subtask.push(newSubtask);

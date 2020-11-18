@@ -1,3 +1,4 @@
+const { MakeReminder, MakeSubtask, MakeTag } = require("../make-data.js");
 const Database = require("../database.js");
 // exstract functions
 
@@ -13,12 +14,45 @@ let remindersController = {
   },
 
   create: function (req, res) {
-    let reminder = {
-      id: Database.cindy.reminders.length + 1,
-      title: req.body.title,
-      description: req.body.description,
-      completed: false,
-    };
+    const subTaskArr = [];
+    const tagsArr = [];
+
+    const subtaskReq = req.body.reminder_subtask;
+    const tagReq = req.body.reminder_tag;
+
+    // Check if the subtask req exist
+    if (subtaskReq) {
+      // Check if there are many subtasks
+      if (typeof subtaskReq === "object") {
+        subtaskReq.forEach((description, subtask_id) => {
+          subTaskArr.push(new MakeSubtask(subtask_id, description));
+        });
+      } else {
+        subTaskArr.push(new MakeSubtask(0, subtaskReq));
+      }
+    }
+
+    // Check if the tag req exist
+    if (tagReq) {
+      if (typeof tagReq === "object") {
+        // Check if there are many tags
+        tagReq.forEach((description, tag_id) => {
+          tagsArr.push(new MakeTag(tag_id, description));
+        });
+      } else {
+        tagsArr.push(new MakeSubtask(0, tagReq));
+      }
+    }
+
+    const reminder = new MakeReminder(
+      Database.cindy.reminders.length + 1,
+      req.body.title,
+      req.body.description,
+      subTaskArr,
+      tagsArr
+    );
+
+    console.log(reminder);
     Database.cindy.reminders.push(reminder);
     res.redirect("/reminder");
   },
@@ -26,21 +60,21 @@ let remindersController = {
   signUpPage: function (req, res) {
     res.render("reminder/newuser");
   },
-  
+
   signUp: function (req, res) {
     username = req.body.username;
     psw = req.body.password;
-    
+
     if (!Database.hasOwnProperty(username)) {
       Database[username] = {
         reminders: [],
-        psw: ""
-      }
+        psw: "",
+      };
       Database[username].psw = psw;
       res.redirect("/reminder");
     } else {
       res.render("reminder/newuser", {
-        err: "username has been registered"
+        err: "username has been registered",
       });
     }
   },
@@ -92,8 +126,6 @@ let remindersController = {
     Database.cindy.reminders.splice(idx, 1);
     res.redirect("/reminder");
   },
-
-
 };
 
 module.exports = remindersController;
