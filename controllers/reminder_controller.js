@@ -1,3 +1,4 @@
+const { MakeReminder, MakeSubtask, MakeTag } = require("../make-data.js");
 const Database = require("../database.js");
 const url = require("url");
 
@@ -23,12 +24,45 @@ let remindersController = {
   },
 
   create: function (req, res) {
-    let reminder = {
-      id: Database["cindy@gmail.com"].reminders.length + 1,
-      title: req.body.title,
-      description: req.body.description,
-      completed: false,
-    };
+    const subTaskArr = [];
+    const tagsArr = [];
+
+    const subtaskReq = req.body.reminder_subtask;
+    const tagReq = req.body.reminder_tag;
+
+    // Check if the subtask req exist
+    if (subtaskReq) {
+      // Check if there are many subtasks
+      if (typeof subtaskReq === "object") {
+        subtaskReq.forEach((description, subtask_id) => {
+          subTaskArr.push(new MakeSubtask(subtask_id, description));
+        });
+      } else {
+        subTaskArr.push(new MakeSubtask(0, subtaskReq));
+      }
+    }
+
+    // Check if the tag req exist
+    if (tagReq) {
+      if (typeof tagReq === "object") {
+        // Check if there are many tags
+        tagReq.forEach((description, tag_id) => {
+          tagsArr.push(new MakeTag(tag_id, description));
+        });
+      } else {
+        tagsArr.push(new MakeSubtask(0, tagReq));
+      }
+    }
+
+    const reminder = new MakeReminder(
+      Database["cindy@gmail.com"].reminders.length + 1,
+      req.body.title,
+      req.body.description,
+      subTaskArr,
+      tagsArr
+    );
+
+    console.log(reminder);
     Database["cindy@gmail.com"].reminders.push(reminder);
     res.redirect("/reminders");
   },
@@ -36,46 +70,22 @@ let remindersController = {
   // signUpPage: function (req, res) {
   //   res.render("reminder/newuser");
   // },
-  
+
   // signUp: function (req, res) {
   //   username = req.body.username;
   //   psw = req.body.password;
-    
+
   //   if (!Database.hasOwnProperty(username)) {
   //     Database[username] = {
   //       reminders: [],
-  //       psw: ""
-  //     }
+  //       psw: "",
+  //     };
   //     Database[username].psw = psw;
-  //     res.redirect("/reminders");
+  //     res.redirect("/reminder");
   //   } else {
   //     res.render("reminder/newuser", {
-  //       err: "username has been registered"
+  //       err: "username has been registered",
   //     });
-  //   }
-  // },
-
-  // loginPage: function (req, res) {
-  //   res.render("reminder/loginPage");
-  // },
-
-  // login: function (req, res) {
-  //   username = req.body.username;
-  //   password = req.body.password;
-    
-  //   if (Database.hasOwnProperty(username)) {
-  //     if (Database[username].psw === password){
-  //       res.redirect("/reminder");
-  //       // res.redirect("/reminder/:username");
-  //     } else {
-  //       res.render("reminder/loginPage", {
-  //         err: "password is not correct"
-  //       })
-  //     }
-  //   } else {
-  //     res.render("reminder/loginPage", {
-  //       err: "The username does not exist"
-  //     })
   //   }
   // },
 
@@ -105,6 +115,8 @@ let remindersController = {
 
   update: function (req, res) {
     let isCompleted = req.body.completed == "true";
+
+    // The updateReminder should be modified to have time,tag and subtask ?
     let updateReminder = {
       id: req.body.id,
       title: req.body.title,
@@ -126,8 +138,6 @@ let remindersController = {
     Database["cindy@gmail.com"].reminders.splice(idx, 1);
     res.redirect("/reminders");
   },
-
-
 };
 
 module.exports = remindersController;

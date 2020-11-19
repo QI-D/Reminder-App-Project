@@ -3,13 +3,15 @@ let Database = {
   "cindy@gmail.com": {
     reminders: [],
     // em: "cindy@gmail.com",
-    psw: "cindy"
+    psw: "cindy",
+    
   },
   // alex: {
   "alex@outlook.com": {
     reminders: [],
     // em: "",
-    psw: ""
+    psw: "",
+    
   },
 };
 

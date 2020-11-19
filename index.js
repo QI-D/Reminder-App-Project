@@ -41,7 +41,7 @@ app.get("/reminders", reminderController.list);
 app.get("/reminder/new", reminderController.new);
 
 //Case 4: User SENDS NEW REMINDER DATA TO US (CREATING A REMINDER)
-app.post("/reminder", reminderController.create);
+app.post("/reminders", reminderController.create);
 
 //Case 5: User wants to go to sign up page
 // app.get("/reminder/register", authController.register);

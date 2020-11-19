@@ -1,13 +1,19 @@
 <div class="list-group subtasks">
-    <h5> 📜 Subtasks <a class="show--subtask" href="#">add ➕</a></h5>
+    <h5> 
+        <i class="fas fa-tasks"></i> Subtasks 
+        <a href="#create__sub__task" data-toggle="collapse" aria-expanded="false" aria-controls="create__sub__task">
+            add <small><i class="fas fa-plus"></i></small>
+        </a>
 
-    <form action="/reminder/<%= reminderItem.id %>/subtask/update" method="POST" class="form--subtask" style="display: none;">
+    </h5>
+
+    <form action="/reminder/<%= reminderItem.id %>/subtask/update" method="POST" class="collapse" id="create__sub__task" >
         <div class="new--subtasks">
             <label for="new--task">Create a New Subtask</label>
             <input type="text" class="form-control" id="new--task" name="subtask__msg" placeholder="Subtask">
         </div>
         <div class="add--newtask">
-            <button type="submit" class="btn btn-primary ">add</button>
+            <button type="submit" class="btn btn-primary">add</button>
         </div>
     </form>
     <%if (reminderItem.subtask == undefined ) { %>
@@ -16,9 +22,9 @@
         <% reminderItem.subtask.forEach((subtask)=> {%>
             <form action="/reminder/<%= reminderItem.id %>/subtask/delete" method="POST">
                 <input type="hidden" name="id" value=<%=subtask.id%>>
-                <li class="subtasks-li list-group-item ">
-                    <input onChange="this.form.submit()" type="checkbox" id="subtask--id" name="iscompleted" value="true">
-                    <label for="subtask--id"><%= subtask.description %></label>
+                <li class="list-group-item mb-2 p-1 pl-2">
+                    <input onChange="this.form.submit()" type="checkbox" id="subtask__id" name="iscompleted" value="true">
+                    <label for="subtask__id"><%= subtask.description %></label>
                 </li>
             </form>
         <% }) %>
