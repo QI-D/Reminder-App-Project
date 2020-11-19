@@ -17,30 +17,29 @@ let remindersController = {
     const subTaskArr = [];
     const tagsArr = [];
 
-    const subtaskReq = req.body.reminder_subtask;
-    const tagReq = req.body.reminder_tag;
+    const { reminder_subtask, reminder_tag } = req.body;
 
     // Check if the subtask req exist
-    if (subtaskReq) {
+    if (reminder_subtask) {
       // Check if there are many subtasks
-      if (typeof subtaskReq === "object") {
-        subtaskReq.forEach((description, subtask_id) => {
+      if (typeof reminder_subtask === "object") {
+        reminder_subtask.forEach((description, subtask_id) => {
           subTaskArr.push(new MakeSubtask(subtask_id, description));
         });
       } else {
-        subTaskArr.push(new MakeSubtask(0, subtaskReq));
+        subTaskArr.push(new MakeSubtask(0, reminder_subtask));
       }
     }
 
     // Check if the tag req exist
-    if (tagReq) {
-      if (typeof tagReq === "object") {
+    if (reminder_tag) {
+      if (typeof reminder_tag === "object") {
         // Check if there are many tags
-        tagReq.forEach((description, tag_id) => {
+        reminder_tag.forEach((description, tag_id) => {
           tagsArr.push(new MakeTag(tag_id, description));
         });
       } else {
-        tagsArr.push(new MakeSubtask(0, tagReq));
+        tagsArr.push(new MakeSubtask(0, reminder_tag));
       }
     }
 
@@ -52,7 +51,6 @@ let remindersController = {
       tagsArr
     );
 
-    console.log(reminder);
     Database.cindy.reminders.push(reminder);
     res.redirect("/reminder");
   },
@@ -104,17 +102,15 @@ let remindersController = {
   },
 
   update: function (req, res) {
-    let isCompleted = req.body.completed == "true";
-    let updateReminder = {
-      id: req.body.id,
-      title: req.body.title,
-      description: req.body.description,
-      completed: isCompleted,
-    };
-    let idx = Database.cindy.reminders.findIndex((reminder) => {
-      return reminder.id == updateReminder.id;
+    const reminder_id = req.params.id;
+    Database.cindy.reminders.find((reminder) => {
+      if (reminder.id == reminder_id) {
+        (reminder.title = req.body.title),
+          (reminder.description = req.body.description),
+          (reminder.completed = req.body.completed == "true");
+      }
+      return reminder;
     });
-    Database.cindy.reminders[idx] = updateReminder;
     res.redirect("/reminder/" + req.body.id); // this should be routes in index.js with redirects
   },
 
