@@ -109,8 +109,8 @@ let remindersController = {
           (reminder.description = req.body.description),
           (reminder.completed = req.body.completed == "true");
       }
-      return reminder;
     });
+
     res.redirect("/reminder/" + req.body.id); // this should be routes in index.js with redirects
   },
 
