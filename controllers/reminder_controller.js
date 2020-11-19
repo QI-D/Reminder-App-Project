@@ -6,8 +6,9 @@ const url = require("url");
 
 let remindersController = {
   list: function (req, res) {
-    // store the destination url in res.locals
-    res.locals.url = req.url;
+
+    // store the destination url in res.locals 
+    res.locals.url=req.url;
 
     res.render("reminder/index", {
       reminders: Database["cindy@gmail.com"].reminders,
@@ -15,8 +16,9 @@ let remindersController = {
   },
 
   new: function (req, res) {
+
     // store the destination url in res.locals
-    res.locals.url = req.url;
+    res.locals.url=req.url;
 
     res.render("reminder/create");
   },
@@ -59,9 +61,11 @@ let remindersController = {
       tagsArr
     );
 
+
     console.log(reminder);
     Database["cindy@gmail.com"].reminders.push(reminder);
     res.redirect("/reminders");
+
   },
 
   // signUpPage: function (req, res) {
@@ -88,11 +92,9 @@ let remindersController = {
 
   listOne: function (req, res) {
     let reminderToFind = req.params.id;
-    let searchResult = Database["cindy@gmail.com"].reminders.find(
-      (reminder) => {
-        return reminder.id == reminderToFind;
-      }
-    );
+    let searchResult = Database["cindy@gmail.com"].reminders.find((reminder) => {
+      return reminder.id == reminderToFind;
+    });
     if (searchResult != undefined) {
       res.render("reminder/single-reminder", {
         reminderItem: searchResult,
@@ -104,30 +106,24 @@ let remindersController = {
 
   edit: function (req, res) {
     let reminderToFind = req.params.id;
-    let searchResult = Database["cindy@gmail.com"].reminders.find(
-      (reminder) => {
-        return reminder.id == reminderToFind;
-      }
-    );
+    let searchResult = Database["cindy@gmail.com"].reminders.find((reminder) => {
+      return reminder.id == reminderToFind;
+    });
     res.render("reminder/edit-reminder", {
       reminderItem: searchResult,
     });
   },
 
   update: function (req, res) {
-    let isCompleted = req.body.completed == "true";
-
-    // The updateReminder should be modified to have time,tag and subtask ?
-    let updateReminder = {
-      id: req.body.id,
-      title: req.body.title,
-      description: req.body.description,
-      completed: isCompleted,
-    };
-    let idx = Database["cindy@gmail.com"].reminders.findIndex((reminder) => {
-      return reminder.id == updateReminder.id;
+    const reminder_id = req.params.id;
+    Database["cindy@gmail.com"].reminders.find((reminder) => {
+      if (reminder.id == reminder_id) {
+        (reminder.title = req.body.title),
+          (reminder.description = req.body.description),
+          (reminder.completed = req.body.completed == "true");
+      }
     });
-    Database["cindy@gmail.com"].reminders[idx] = updateReminder;
+
     res.redirect("/reminder/" + req.body.id); // this should be routes in index.js with redirects
   },
 
