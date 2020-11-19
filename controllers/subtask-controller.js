@@ -9,13 +9,14 @@ let subtaskController = {
     let subtaskToFind = req.params.id;
 
     // find the index of specific reminder that matched with a reminder id
-    let searchResultID = Database.cindy.reminders.findIndex((reminder) => {
+    let searchResultID = Database["cindy@gmail.com"].reminders.findIndex((reminder) => {
       return reminder.id == subtaskToFind;
     });
 
     // get spcific reminder
-    let searchReminder = Database.cindy.reminders[searchResultID];
+    let searchReminder = Database["cindy@gmail.com"].reminders[searchResultID];
 
+    console.log(searchReminder);
     // subtask data strcuture
     let newSubtask = new MakeSubtask(
       searchReminder.subtask.length + 1,
@@ -34,7 +35,7 @@ let subtaskController = {
     let subtaskId = req.body.id;
 
     //get a single reminder from reminder list
-    let searchResult = Database.cindy.reminders.find((reminder) => {
+    let searchResult = Database["cindy@gmail.com"].reminders.find((reminder) => {
       return reminder.id == deleteId;
     });
 

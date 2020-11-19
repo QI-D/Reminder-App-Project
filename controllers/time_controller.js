@@ -7,12 +7,12 @@ let timeController = {
         let page_id = req.params.id;
 
         // find the index of specific reminder that matched with a reminder id
-        let searchResultID = Database.cindy.reminders.findIndex((reminder) => {
+        let searchResultID = Database["cindy@gmail.com"].reminders.findIndex((reminder) => {
             return reminder.id == page_id;
         });
 
         // get spcific reminder
-        let searchReminder = Database.cindy.reminders[searchResultID];
+        let searchReminder = Database["cindy@gmail.com"].reminders[searchResultID];
 
         searchReminder.time=inputTime;
         

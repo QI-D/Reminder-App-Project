@@ -7,12 +7,13 @@ let tagController = {
     let tagName = req.body.tag_name;
     let tagID = req.params.id;
 
-    let searchResultID = Database.cindy.reminders.findIndex((reminder) => {
+    let searchResultID = Database["cindy@gmail.com"].reminders.findIndex((reminder) => {
       return reminder.id == tagID;
     });
 
-    let searchReminder = Database.cindy.reminders[searchResultID];
-
+    let searchReminder = Database["cindy@gmail.com"].reminders[searchResultID];
+    
+    console.log(searchReminder);
     let newtag = new MakeTag(searchReminder.tag.length + 1, tagName);
     // {
     //   id: searchReminder.tag.length + 1,
@@ -28,7 +29,7 @@ let tagController = {
     let deleteId = req.params.id;
     let tagId = req.body.id;
 
-    let searchResult = Database.cindy.reminders.find((reminder) => {
+    let searchResult = Database["cindy@gmail.com"].reminders.find((reminder) => {
       return reminder.id == deleteId;
     });
 
