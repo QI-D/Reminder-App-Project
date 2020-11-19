@@ -1,3 +1,5 @@
+const { MakeSubtask } = require("../make-data.js");
+
 const Database = require("../database.js");
 
 let subtaskController = {
@@ -7,24 +9,19 @@ let subtaskController = {
     let subtaskToFind = req.params.id;
 
     // find the index of specific reminder that matched with a reminder id
-    let searchResultID = Database.cindy.reminders.findIndex((reminder) => {
+    let searchResultID = Database["cindy@gmail.com"].reminders.findIndex((reminder) => {
       return reminder.id == subtaskToFind;
     });
 
     // get spcific reminder
-    let searchReminder = Database.cindy.reminders[searchResultID];
+    let searchReminder = Database["cindy@gmail.com"].reminders[searchResultID];
 
-    // if reminder does not have subtask property, then add "subtask"
-    if (!searchReminder.hasOwnProperty("subtask")) {
-      searchReminder.subtask = [];
-    }
-
+    console.log(searchReminder);
     // subtask data strcuture
-    let newSubtask = {
-      id: searchReminder.subtask.length + 1,
-      description: subtaskMsg,
-      completed: false,
-    };
+    let newSubtask = new MakeSubtask(
+      searchReminder.subtask.length + 1,
+      subtaskMsg
+    );
 
     // add subtask to subtask lists for specific reminder
     searchReminder.subtask.push(newSubtask);
@@ -38,7 +35,7 @@ let subtaskController = {
     let subtaskId = req.body.id;
 
     //get a single reminder from reminder list
-    let searchResult = Database.cindy.reminders.find((reminder) => {
+    let searchResult = Database["cindy@gmail.com"].reminders.find((reminder) => {
       return reminder.id == deleteId;
     });
 
