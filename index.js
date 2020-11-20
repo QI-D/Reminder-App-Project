@@ -17,6 +17,7 @@ const path = require("path");
 const ejsLayouts = require("express-ejs-layouts");
 const reminderController = require("./controllers/reminder_controller");
 const authController = require("./controllers/auth_controller");
+const middlewares = require("./middlewares.js");
 
 // express is going to return back to us a web server
 const subtaskApp = require("./subtask-routes.js");
@@ -41,7 +42,7 @@ app.get("/reminders", reminderController.list);
 app.get("/reminder/new", reminderController.new);
 
 //Case 4: User SENDS NEW REMINDER DATA TO US (CREATING A REMINDER)
-app.post("/reminders", reminderController.create);
+app.post("/reminders", middlewares.parseBodyToArr, reminderController.create);
 
 //Case 5: User wants to go to sign up page
 // app.get("/reminder/register", authController.register);
