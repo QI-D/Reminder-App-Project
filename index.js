@@ -17,8 +17,10 @@ const path = require("path");
 const ejsLayouts = require("express-ejs-layouts");
 const reminderController = require("./controllers/reminder_controller");
 const authController = require("./controllers/auth_controller");
+
 const cookieSession = require('cookie-session');
 const authCheck = require("./middleware/auth");
+const middlewares = require("./middlewares.js");
 
 // express is going to return back to us a web server
 const subtaskApp = require("./subtask-routes.js");
@@ -48,8 +50,18 @@ app.get("/reminders/", authCheck, reminderController.list);
 //Case 3: user goes to localhost:8080/reminder -> show a CREATE REMINDER RAGE
 app.get("/reminder/new", authCheck, reminderController.new);
 
+// app.post("/reminders/", authCheck, reminderController.create);
 //Case 4: User SENDS NEW REMINDER DATA TO US (CREATING A REMINDER)
-app.post("/reminders/", authCheck, reminderController.create);
+app.post("/reminders", authCheck, middlewares.parseBodyToArr, reminderController.create);
+
+//Case 5: User wants to go to sign up page
+// app.get("/reminder/register", authController.register);
+
+// //Case 6: User create account with username and password
+// app.post("/reminder/signUp", authController.registerSubmit);
+
+// //Case 7: User wants to go to login page
+// app.get("/reminder/loginPage", authController.login);
 
 // Case 5: User wants to see an individual reminder
 app.get("/reminder/:id", authCheck, reminderController.listOne);

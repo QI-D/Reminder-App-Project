@@ -45,26 +45,16 @@ let remindersController = {
 
     // Check if the subtask req exist
     if (reminder_subtask) {
-      // Check if there are many subtasks
-      if (typeof reminder_subtask === "object") {
-        reminder_subtask.forEach((description, subtask_id) => {
-          subTaskArr.push(new MakeSubtask(subtask_id, description));
-        });
-      } else {
-        subTaskArr.push(new MakeSubtask(0, reminder_subtask));
-      }
+      reminder_subtask.forEach((description, subtask_id) => {
+        subTaskArr.push(new MakeSubtask(subtask_id, description));
+      });
     }
 
     // Check if the tag req exist
     if (reminder_tag) {
-      if (typeof reminder_tag === "object") {
-        // Check if there are many tags
-        reminder_tag.forEach((description, tag_id) => {
-          tagsArr.push(new MakeTag(tag_id, description));
-        });
-      } else {
-        tagsArr.push(new MakeSubtask(0, reminder_tag));
-      }
+      reminder_tag.forEach((description, tag_id) => {
+        tagsArr.push(new MakeTag(tag_id, description));
+      });
     }
 
     const reminder = new MakeReminder(
