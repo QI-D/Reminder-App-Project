@@ -9,9 +9,11 @@ let authController = {
     // implement
     email = req.body.email
     password = req.body.password
-    
+    console.log('login', req.body)
+
     if (database.hasOwnProperty(email)) {
       if (database[email].psw === password) {
+        req.session['user'] = email;
         res.redirect("/reminders");
       } else {
         res.render("auth/login", {
@@ -26,8 +28,6 @@ let authController = {
   },
 
   register: (req, res) => {
-    // res.render('auth/register')
-
     // get email from request
     let useremail=req.query.email;
 
@@ -38,18 +38,16 @@ let authController = {
   registerSubmit: (req, res) => {
     // implement
     email = req.body.email;
-    
-    // username = req.body.username;
     password = req.body.password;
-    // console.log(em, psw)
+    console.log('register', req.body);
+
     if (!database.hasOwnProperty(email)) {
       database[email] = {
         reminders: [],
-        // em: "",
-        psw: ""
+        psw: password,
+        // userid: Object.keys(database).length
       }
-      database[email].psw = password;
-      // database[username].em = email;
+      req.session['user'] = email;
       res.redirect("/reminders");
     } else {
       res.render("auth/register", {

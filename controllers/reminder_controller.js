@@ -5,14 +5,28 @@ const url = require("url");
 // exstract functions
 
 let remindersController = {
-  list: function (req, res) {
+  // list: function (req, res) {
+  //   console.log(req.session['user']);
 
-    // store the destination url in res.locals 
-    res.locals.url=req.url;
+  //   let user = Database[req.session.user];
+  //   if (user) {
+      
+  //     // store the destination url in res.locals 
+  //     res.locals.url=req.url;
 
+  //     res.render("reminder/index", {
+  //       reminders: Database["cindy@gmail.com"].reminders,
+  //     }); // no need to user .ejs because we already specified
+  //   } else {
+  //     res.render("auth/login");
+  //   }
+  // },
+
+  list: function (req, res){
+    res.locals.url = req.url;
     res.render("reminder/index", {
       reminders: Database["cindy@gmail.com"].reminders,
-    }); // no need to user .ejs because we already specified
+    });
   },
 
   new: function (req, res) {
@@ -61,34 +75,10 @@ let remindersController = {
       tagsArr
     );
 
-
     console.log(reminder);
     Database["cindy@gmail.com"].reminders.push(reminder);
     res.redirect("/reminders");
-
   },
-
-  // signUpPage: function (req, res) {
-  //   res.render("reminder/newuser");
-  // },
-
-  // signUp: function (req, res) {
-  //   username = req.body.username;
-  //   psw = req.body.password;
-
-  //   if (!Database.hasOwnProperty(username)) {
-  //     Database[username] = {
-  //       reminders: [],
-  //       psw: "",
-  //     };
-  //     Database[username].psw = psw;
-  //     res.redirect("/reminder");
-  //   } else {
-  //     res.render("reminder/newuser", {
-  //       err: "username has been registered",
-  //     });
-  //   }
-  // },
 
   listOne: function (req, res) {
     let reminderToFind = req.params.id;

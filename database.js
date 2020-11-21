@@ -4,14 +4,14 @@ let Database = {
     reminders: [],
     // em: "cindy@gmail.com",
     psw: "cindy",
-    
+    // userid: 1
   },
   // alex: {
   "alex@outlook.com": {
     reminders: [],
     // em: "",
-    psw: "",
-    
+    psw: "alex",
+    // userid: 2
   },
 };
 
