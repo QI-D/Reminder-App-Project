@@ -36,7 +36,7 @@ app.set("view engine", "ejs");
 app.use(cookieSession({
 	name: 'session',
 	keys: ['aaa', 'bbb', 'ccc'],
-  maxAge: 10*24*3600*1000// cookie expires in 1 hour
+  maxAge: 30 * 60 * 1000 // cookie expires in 30 min
 }));
 
 //Case 1: user goes to localhost: 8080 -> information about site, marketing, login page ...
