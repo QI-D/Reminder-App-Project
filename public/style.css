@@ -135,3 +135,9 @@
     margin-bottom: 10px;
     margin-top: 10px;
   }
+  body {
+    background-image: url('img/bg1.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+  }
