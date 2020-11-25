@@ -29,4 +29,13 @@ class MakeTag {
   }
 }
 
-module.exports = { MakeSubtask, MakeReminder, MakeTag };
+class MakeUser {
+  constructor(id, email, password, reminders = null, friendList = null) {
+    this.id = id;
+    this.email = email;
+    this.password = password;
+    this.reminders = reminders == null ? [] : reminders;
+    this.friendList = friendList == null ? [] : friendList;
+  }
+}
+module.exports = { MakeSubtask, MakeReminder, MakeTag, MakeUser };
