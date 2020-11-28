@@ -48,13 +48,17 @@ app.get("/", (req, res) => {
   res.send("Go to http://localhost:3000/reminders");
 });
 
+// Case xxx: friends
+app.get("/reminder/friends",authCheck, reminderController.showfriend);
+
+app.post("/reminder/friends",authCheck,reminderController.addfriend);
+
 //Case 2: User goes to Localhost:8080/reminder -> show a list of reminders
 app.get("/reminders/", authCheck, reminderController.list);
 
 //Case 3: user goes to localhost:8080/reminder -> show a CREATE REMINDER RAGE
 app.get("/reminder/new", authCheck, reminderController.new);
 
-// app.post("/reminders/", authCheck, reminderController.create);
 //Case 4: User SENDS NEW REMINDER DATA TO US (CREATING A REMINDER)
 app.post(
   "/reminders",
@@ -63,17 +67,8 @@ app.post(
   reminderController.create
 );
 
-//Case 5: User wants to go to sign up page
-// app.get("/reminder/register", authController.register);
-
-// //Case 6: User create account with username and password
-// app.post("/reminder/signUp", authController.registerSubmit);
-
-// //Case 7: User wants to go to login page
-// app.get("/reminder/loginPage", authController.login);
-
 // Case 5: User wants to see an individual reminder
-app.get("/reminder/:id", authCheck, reminderController.listOne);
+app.get("/reminder:id", authCheck, reminderController.listOne);
 
 // Case 6: User wnats to EDIT an individual reminder
 app.get("/reminder/:id/edit", authCheck, reminderController.edit);
@@ -95,6 +90,10 @@ app.post("/register", authController.registerSubmit);
 
 //Case 12: User wants to login with account info
 app.post("/login", authController.loginSubmit);
+
+
+
+
 
 //======= Subtask =============
 
@@ -127,6 +126,10 @@ youtubeApp.post(app);
 
 // Case 3: User wants add their favorite videos
 youtubeApp.add(app);
+
+
+
+
 
 // web service request through port 3000
 app.listen(3000, () => {

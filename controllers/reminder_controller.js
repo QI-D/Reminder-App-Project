@@ -4,29 +4,22 @@ const url = require("url");
 // exstract functions
 
 let remindersController = {
-  // list: function (req, res) {
-  //   console.log(req.session['user']);
-
-  //   let user = Database[req.session.user];
-  //   if (user) {
-
-  //     // store the destination url in res.locals
-  //     res.locals.url=req.url;
-
-  //     res.render("reminder/index", {
-  //       reminders: Database["cindy@gmail.com"].reminders,
-  //     }); // no need to user .ejs because we already specified
-  //   } else {
-  //     res.render("auth/login");
-  //   }
-  // },
-
-  list: function (req, res) {
+  list: function(req, res) {
     res.locals.url = req.url;
+    console.log(req.session['user']);
+    let user = Database[req.session.user];
+
     res.render("reminder/index", {
-      reminders: Database["cindy@gmail.com"].reminders,
-    });
+      reminders: user.reminders
+    })
   },
+
+  // list: function (req, res) {
+  //   res.locals.url = req.url;
+  //   res.render("reminder/index", {
+  //     reminders: user.reminders,
+  //   });
+  // },
 
   new: function (req, res) {
     // store the destination url in res.locals
@@ -55,9 +48,9 @@ let remindersController = {
         tagsArr.push(new MakeTag(tag_id, description));
       });
     }
-
+    let user = Database[req.session.user];
     const reminder = new MakeReminder(
-      Database["cindy@gmail.com"].reminders.length + 1,
+      user.reminders.length + 1,
       req.body.title,
       req.body.description,
       subTaskArr,
@@ -65,13 +58,15 @@ let remindersController = {
     );
 
     console.log(reminder);
-    Database["cindy@gmail.com"].reminders.push(reminder);
+    user.reminders.push(reminder);
     res.redirect("/reminders");
   },
 
   listOne: function (req, res) {
     let reminderToFind = req.params.id;
-    let searchResult = Database["cindy@gmail.com"].reminders.find(
+    let user = Database[req.session.user];
+    
+    let searchResult = user.reminders.find(
       (reminder) => {
         return reminder.id == reminderToFind;
       }
@@ -86,8 +81,10 @@ let remindersController = {
   },
 
   edit: function (req, res) {
+    let user = Database[req.session.user];
     let reminderToFind = req.params.id;
-    let searchResult = Database["cindy@gmail.com"].reminders.find(
+
+    let searchResult = user.reminders.find(
       (reminder) => {
         return reminder.id == reminderToFind;
       }
@@ -99,7 +96,9 @@ let remindersController = {
 
   update: function (req, res) {
     const reminder_id = req.params.id;
-    Database["cindy@gmail.com"].reminders.find((reminder) => {
+    let user = Database[req.session.user];
+
+    user.reminders.find((reminder) => {
       if (reminder.id == reminder_id) {
         (reminder.title = req.body.title),
           (reminder.description = req.body.description),
@@ -112,12 +111,39 @@ let remindersController = {
 
   delete: function (req, res) {
     let deleteId = req.params.id;
-    let idx = Database["cindy@gmail.com"].reminders.findIndex((reminder) => {
+    let user = Database[req.session.user];
+    
+    let idx = user.reminders.findIndex((reminder) => {
       return reminder.id == deleteId;
     });
-    Database["cindy@gmail.com"].reminders.splice(idx, 1);
+    user.reminders.splice(idx, 1);
     res.redirect("/reminders");
   },
+
+  showfriend: function (req, res) {
+    res.locals.url = req.url;
+    let user = Database[req.session.user];
+    let friends=user["friendList"];
+    
+    res.render("reminder/friends",{
+      userfriends:friends});
+  },
+
+  addfriend: function (req,res){
+    res.locals.url=req.url;
+    friendEmail=req.body.friendEmail;
+    // console.log("email", req.body);
+    let user = Database[req.session.user]
+    user["friendList"].push(friendEmail);
+
+    // The database must have that user with the friendEmail
+    // Database.friendEmail["friendList"].push(user);
+    
+    console.log(user["friendList"]);
+    res.redirect("/reminder/friends");
+
+    
+  }
 };
 
 module.exports = remindersController;
