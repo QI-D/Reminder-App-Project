@@ -5,6 +5,7 @@ let Database = {
     // em: "cindy@gmail.com",
     psw: "cindy",
     // userid: 1
+    videoList: [],
   },
   // alex: {
   "alex@outlook.com": {

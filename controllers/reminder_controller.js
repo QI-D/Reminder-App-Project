@@ -1,7 +1,6 @@
 const { MakeReminder, MakeSubtask, MakeTag } = require("../make-data.js");
 const Database = require("../database.js");
 const url = require("url");
-
 // exstract functions
 
 let remindersController = {
@@ -10,8 +9,8 @@ let remindersController = {
 
   //   let user = Database[req.session.user];
   //   if (user) {
-      
-  //     // store the destination url in res.locals 
+
+  //     // store the destination url in res.locals
   //     res.locals.url=req.url;
 
   //     res.render("reminder/index", {
@@ -22,7 +21,7 @@ let remindersController = {
   //   }
   // },
 
-  list: function (req, res){
+  list: function (req, res) {
     res.locals.url = req.url;
     res.render("reminder/index", {
       reminders: Database["cindy@gmail.com"].reminders,
@@ -30,9 +29,9 @@ let remindersController = {
   },
 
   new: function (req, res) {
-
     // store the destination url in res.locals
-    res.locals.url=req.url;
+
+    res.locals.url = req.url;
 
     res.render("reminder/create");
   },
@@ -72,9 +71,11 @@ let remindersController = {
 
   listOne: function (req, res) {
     let reminderToFind = req.params.id;
-    let searchResult = Database["cindy@gmail.com"].reminders.find((reminder) => {
-      return reminder.id == reminderToFind;
-    });
+    let searchResult = Database["cindy@gmail.com"].reminders.find(
+      (reminder) => {
+        return reminder.id == reminderToFind;
+      }
+    );
     if (searchResult != undefined) {
       res.render("reminder/single-reminder", {
         reminderItem: searchResult,
@@ -86,9 +87,11 @@ let remindersController = {
 
   edit: function (req, res) {
     let reminderToFind = req.params.id;
-    let searchResult = Database["cindy@gmail.com"].reminders.find((reminder) => {
-      return reminder.id == reminderToFind;
-    });
+    let searchResult = Database["cindy@gmail.com"].reminders.find(
+      (reminder) => {
+        return reminder.id == reminderToFind;
+      }
+    );
     res.render("reminder/edit-reminder", {
       reminderItem: searchResult,
     });

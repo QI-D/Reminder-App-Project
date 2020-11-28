@@ -1,3 +1,5 @@
+const database = require("./database");
+
 let middlewares = {
   parseBodyToArr: function (req, res, next) {
     let { reminder_subtask, reminder_tag } = req.body;
@@ -10,6 +12,18 @@ let middlewares = {
         ? [reminder_tag] //
         : reminder_tag;
     next();
+  },
+  currenUser: function (req, res, next) {
+    if (req.session.user) {
+      if (database[req.session.user]) {
+        req.currentUser = database[req.session.user];
+        next();
+      } else {
+        next();
+      }
+    } else {
+      next();
+    }
   },
 };
 

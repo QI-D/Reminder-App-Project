@@ -30,12 +30,28 @@ class MakeTag {
 }
 
 class MakeUser {
-  constructor(id, email, password, reminders = null, friendList = null) {
+  constructor(
+    id,
+    email,
+    password,
+    reminders = null,
+    friendList = null,
+    videoList = null
+  ) {
     this.id = id;
     this.email = email;
     this.password = password;
     this.reminders = reminders == null ? [] : reminders;
     this.friendList = friendList == null ? [] : friendList;
+    this.videoList = videoList == null ? [] : videoList;
   }
 }
-module.exports = { MakeSubtask, MakeReminder, MakeTag, MakeUser };
+class MakeVideo {
+  constructor(id, title, vidImg, vidId) {
+    this.id = id;
+    this.title = title;
+    this.vidImg = vidImg;
+    this.vidId = vidId;
+  }
+}
+module.exports = { MakeSubtask, MakeReminder, MakeTag, MakeUser, MakeVideo };

@@ -18,7 +18,7 @@ const ejsLayouts = require("express-ejs-layouts");
 const reminderController = require("./controllers/reminder_controller");
 const authController = require("./controllers/auth_controller");
 
-const cookieSession = require('cookie-session');
+const cookieSession = require("cookie-session");
 const authCheck = require("./middleware/auth");
 const middlewares = require("./middlewares.js");
 
@@ -27,17 +27,21 @@ const subtaskApp = require("./subtask-routes.js");
 const timeApp = require("./time-routes");
 const tagApp = require("./tag-routes");
 const { loginPage } = require("./controllers/reminder_controller");
+const youtubeApp = require("./youtubeAPI");
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: false }));
 app.use(ejsLayouts);
 app.set("view engine", "ejs");
+app.use(
+  cookieSession({
+    name: "session",
+    keys: ["aaa", "bbb", "ccc"],
+    maxAge: 30 * 60 * 1000, // cookie expires in 30 min
+  })
+);
 
-app.use(cookieSession({
-	name: 'session',
-	keys: ['aaa', 'bbb', 'ccc'],
-  maxAge: 30 * 60 * 1000 // cookie expires in 30 min
-}));
+app.use(middlewares.currenUser);
 
 //Case 1: user goes to localhost: 8080 -> information about site, marketing, login page ...
 app.get("/", (req, res) => {
@@ -52,7 +56,12 @@ app.get("/reminder/new", authCheck, reminderController.new);
 
 // app.post("/reminders/", authCheck, reminderController.create);
 //Case 4: User SENDS NEW REMINDER DATA TO US (CREATING A REMINDER)
-app.post("/reminders", authCheck, middlewares.parseBodyToArr, reminderController.create);
+app.post(
+  "/reminders",
+  authCheck,
+  middlewares.parseBodyToArr,
+  reminderController.create
+);
 
 //Case 5: User wants to go to sign up page
 // app.get("/reminder/register", authController.register);
@@ -107,6 +116,17 @@ tagApp.post(app);
 
 //Case 2: User wants to delete a tag
 tagApp.deletePost(app);
+
+//========= Youtube Api =======
+
+// Case 1: User wants to search for youtube videos
+youtubeApp.get(app);
+
+// Case 2: User gets youtube videos
+youtubeApp.post(app);
+
+// Case 3: User wants add their favorite videos
+youtubeApp.add(app);
 
 // web service request through port 3000
 app.listen(3000, () => {
