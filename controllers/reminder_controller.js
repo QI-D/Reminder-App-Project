@@ -25,8 +25,10 @@ let remindersController = {
     res.locals.url = req.url;
     res.render("reminder/index", {
       reminders: Database["cindy@gmail.com"].reminders,
+      photoUrl: Database["cindy@gmail.com"].photo
     });
   },
+  
 
   new: function (req, res) {
     // store the destination url in res.locals
