@@ -11,11 +11,18 @@
       <% if ( locals.url == "/reminders") { %>
       <a class="nav-item nav-link active" href="/reminders">Reminder List</a>
       <a class="nav-item nav-link" href="/reminder/new">Create</a>
+      <a class="nav-item nav-link" href="/reminder/friends">Friends</a>
       <% } else if ( locals.url == "/reminder/new") { %>
       <a class="nav-item nav-link" href="/reminders">Reminder List</a>
       <a class="nav-item nav-link active" href="/reminder/new">Create</a>
+      <a class="nav-item nav-link" href="/reminder/friends">Friends</a>
+      <% } else if ( locals.url == "/reminder/friends") { %>
+      <a class="nav-item nav-link" href="/reminders">Reminder List</a>
+      <a class="nav-item nav-link" href="/reminder/new">Create</a>
+      <a class="nav-item nav-link active" href="/reminder/friends">Friends</a>
       <% } %>
-      <a class="nav-item nav-link" href="/reminders/ytvideos"><img width=20 src="/img/ytlogo.png" class="img-fluid"></img> Videos</a>
+      <a class="nav-item nav-link" href="/reminders/ytvideos"><img width=20 src="/img/ytlogo.png"
+          class="img-fluid"></img> Videos</a>
 
     </div>
   </div>

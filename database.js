@@ -1,19 +1,17 @@
 let Database = {
-  // cindy: {
   "cindy@gmail.com": {
-    reminders: [],
-    // em: "cindy@gmail.com",
+    reminders: ["", "", ""],
     psw: "cindy",
     // userid: 1
     photo: "https://www3.alpa.org/portals/alpa/fastread/2017/images/20170517-battlestar.jpg",
     videoList: [],
+    friendList: []
   },
-  // alex: {
   "alex@outlook.com": {
-    reminders: [],
-    // em: "",
+    reminders: [""],
     psw: "alex",
-    // userid: 2
+    videoList: [],
+    friendList: []
   },
 };
 
