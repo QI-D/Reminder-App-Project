@@ -1,8 +1,8 @@
 <div class="container">
-    <form action="/reminder/friends" method="GET">
+    <form action="/reminder/friends" method="POST">
         <ul class="list-group">
             <% for (let i=0; i< userfriends.length;i++) { %>
-                <li class="list-group-item"><%= userfriends[i] %></li>
+                <li class="list-group-item"><a href="/reminders" onclick="this.form.submit();" ><%= userfriends[i] %></a></li>
             <% } %>
 
             <!-- <li class="list-group-item">Cras justo odio</li>

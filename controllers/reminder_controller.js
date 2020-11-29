@@ -57,8 +57,13 @@ let remindersController = {
       tagsArr
     );
 
-    console.log(reminder);
+    // console.log(reminder); 
+    
     user.reminders.push(reminder);
+
+    console.log(user.reminders);
+    
+
     res.redirect("/reminders");
   },
 
@@ -71,6 +76,7 @@ let remindersController = {
         return reminder.id == reminderToFind;
       }
     );
+
     if (searchResult != undefined) {
       res.render("reminder/single-reminder", {
         reminderItem: searchResult,

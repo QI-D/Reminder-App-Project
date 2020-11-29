@@ -68,7 +68,7 @@ app.post(
 );
 
 // Case 5: User wants to see an individual reminder
-app.get("/reminder:id", authCheck, reminderController.listOne);
+app.get("/reminder/:id", authCheck, reminderController.listOne);
 
 // Case 6: User wnats to EDIT an individual reminder
 app.get("/reminder/:id/edit", authCheck, reminderController.edit);
