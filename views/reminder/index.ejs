@@ -1,10 +1,11 @@
+<img src = <%= photoUrl %> class="rounded-circle z-depth-2 float-right">
 <div class="container">
     <h1 class="page-header">Reminders</h1>
-    <img src = <%= photoUrl %>>
   
   <ul class="list-group">
     <% reminders.forEach(function (reminderItem) { %>
       <li class="list-group-item">
+        <img src = <%= photoUrl %> class="rounded-circle z-depth-2 float-left" height=50px, width=50px>
         <strong><%= reminderItem.title %>: </strong>
         <%= reminderItem.description %>
         || Completed:
