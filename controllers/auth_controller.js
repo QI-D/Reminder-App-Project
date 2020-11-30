@@ -9,8 +9,9 @@ let authController = {
 
   loginSubmit: (req, res) => {
     // implement
-    email = req.body.email;
-    password = req.body.password;
+    let email = req.body.email;
+    let password = req.body.password;
+
     console.log("login", req.body);
 
     if (database.hasOwnProperty(email)) {

@@ -16,21 +16,12 @@ let remindersController = {
       friendsList.push(Database[friend]);
     }
 
-
     res.render("reminder/index", {
       reminders: user.reminders,
       others: friendsList,
       photoUrl: user.photo
     })
   },
-  
-
-  // list: function (req, res) {
-  //   res.locals.url = req.url;
-  //   res.render("reminder/index", {
-  //     reminders: user.reminders,
-  //   });
-  // },
 
   new: function (req, res) {
     // store the destination url in res.locals
@@ -153,8 +144,6 @@ let remindersController = {
     // console.log("email", req.body);
     let user = Database[req.session.user]
     let useremail = req.session.user
-    console.log("friendEmail:", friendEmail)
-    console.log("user", req.session.user)
 
     if (user.friendList.includes(friendEmail)) {
       res.render("reminder/friends", {
@@ -169,13 +158,13 @@ let remindersController = {
     } else {
       if (Database.hasOwnProperty(friendEmail)) {
         user.friendList.push(friendEmail);
+        Database[friendEmail].friendList.push(useremail);
       } else {
         res.render("reminder/friends", {
           err: "Email does not exist",
           userfriends: user.friendList
         });
       }
-
     }
 
     // The database must have that user with the friendEmail
@@ -183,8 +172,6 @@ let remindersController = {
 
     console.log(user["friendList"]);
     res.redirect("/reminder/friends");
-
-
   },
 
 
