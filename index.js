@@ -20,6 +20,7 @@ const authController = require("./controllers/auth_controller");
 
 const cookieSession = require("cookie-session");
 const authCheck = require("./middleware/auth");
+const buttonCheck = require("./middleware/buttonCheck");
 const middlewares = require("./middlewares.js");
 
 // express is going to return back to us a web server
@@ -51,7 +52,9 @@ app.get("/", (req, res) => {
 // Case xxx: friends
 app.get("/reminder/friends",authCheck, reminderController.showfriend);
 
-app.post("/reminder/friends",authCheck,reminderController.addfriend);
+app.post("/reminder/friends",authCheck, buttonCheck);
+
+// app.post("/reminder/friends",authCheck,reminderController.removeFriend);
 
 //Case 2: User goes to Localhost:8080/reminder -> show a list of reminders
 app.get("/reminders/", authCheck, reminderController.list);
@@ -71,10 +74,12 @@ app.post(
 app.get("/reminder/:id", authCheck, reminderController.listOne);
 
 //
-app.get("/reminder/:email/:id", authCheck, reminderController.listFriendReminder);
+// app.get("/reminder/:email/:id", authCheck, reminderController.listFriendReminder);
 
 // Case 6: User wnats to EDIT an individual reminder
 app.get("/reminder/:id/edit", authCheck, reminderController.edit);
+
+app.get("/reminder/:email/:id", authCheck, reminderController.listFriendReminder);
 
 //Case 7: User clicks the update button from Case 6, and expects their reminder to be updated
 app.post("/reminder/update/:id", authCheck, reminderController.update);

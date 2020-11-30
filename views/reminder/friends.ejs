@@ -1,5 +1,6 @@
 <div class="container">
     <form action="/reminder/friends" method="POST">
+        <h3>Friend List</h3>
         <ul class="list-group">
             <% for (let i=0; i< userfriends.length;i++) { %>
                 <li class="list-group-item"><%= userfriends[i] %></li>
@@ -12,7 +13,6 @@
             <li class="list-group-item">Vestibulum at eros</li> -->
         </ul>
     </form>
-    
     <form action="/reminder/friends" method="POST">
         <div class="form-group">
             <label for="title">Friend's Email</label>
@@ -20,8 +20,8 @@
             <% if (locals.err) { %>
                 <p class="bg-danger"><%= err %></p>
             <% } %>
-            <button type="submit" class="btn btn-default">Add</button>
-            <button type="submit" class="btn btn-default">Delete</button>
+            <button type="submit" class="btn btn-primary" name="add" value="add">Add</button>
+            <button type="submit" class="btn btn-danger" name="delete" value="delete">Delete</button>
         </div>
 
     </form>

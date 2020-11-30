@@ -1,5 +1,5 @@
 class MakeReminder {
-  constructor(id, title, description, subtask = null, tag = null) {
+  constructor(id, title, description, subtask = null, tag = null, time=new Date().getTime()) {
     this.id = id;
     this.title = title;
     this.description = description;
@@ -12,6 +12,7 @@ class MakeReminder {
       tag = [];
     }
     this.tag = tag;
+    this.time=time;
   }
 }
 

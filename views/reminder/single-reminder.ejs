@@ -2,9 +2,11 @@
   <h1 class="page-header">Reminders</h1>
 
   <ul class="list-group">
+    <% if ( Object.keys(locals).includes("friendEmail") ) { %>
     <li class="list-group-item">
 
       <div class="title">
+
         <h3>
           <%= reminderItem.title %>
           <% if (reminderItem.completed == true) { %>
@@ -15,12 +17,47 @@
 
         </h3>
 
+        <div class="tags-list">
+          <% reminderItem.tag.forEach((tag)=> {%>
+          <button type="button" disabled><%= tag.description %> </button>
+          <% }) %>
+        </div>
+      </div>
+      <br>
+      <div class="list-group subtasks">
+        <h5>Subtasks</h5>
+        <% reminderItem.subtask.forEach((subtask)=> {%>
+        <ul class="list-group">
+          <li class="list-group-item mb-2 p-1 pl-2"><%= subtask.description %></li>
+        </ul>
+        <% }) %>
 
+      </div>
 
+      <br>
+
+      <div class="list-group">
+        <h5 class="page-subheader">REMIND ME</h5>
+        <input type="datetime-local" class="form-control col-5" name="time" value=<%= reminderItem.time %> disabled>
 
       </div>
 
 
+      <% } else { %>
+    <li class="list-group-item">
+
+      <div class="title">
+
+        <h3>
+          <%= reminderItem.title %>
+          <% if (reminderItem.completed == true) { %>
+          <span class="badge badge-success">Completed</span>
+          <% } else if (reminderItem.completed == false) { %>
+          <span class="badge badge-danger">In Progress</span>
+          <% } %>
+
+        </h3>
+      </div>
 
       <%- include ("./tags") %>
 
@@ -49,6 +86,7 @@
     </li>
 
   </ul>
+  <% } %>
 
 
 

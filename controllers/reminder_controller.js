@@ -59,8 +59,6 @@ let remindersController = {
       tagsArr
     );
 
-    // console.log(reminder); 
-
     user.reminders.push(reminder);
 
     console.log(user.reminders);
@@ -70,6 +68,7 @@ let remindersController = {
   },
 
   listOne: function (req, res) {
+    
     let reminderToFind = req.params.id;
     let user = Database[req.session.user];
 
@@ -139,6 +138,11 @@ let remindersController = {
   },
 
   addfriend: function (req, res) {
+    // let buttonclicked=req.body.add;
+
+    // console.log(buttonclicked);
+
+
     res.locals.url = req.url;
     friendEmail = req.body.friendEmail;
     // console.log("email", req.body);
@@ -174,11 +178,42 @@ let remindersController = {
     res.redirect("/reminder/friends");
   },
 
+  removeFriend: function (req, res) {
+    res.locals.url = req.url;
+
+    friendEmail = req.body.friendEmail;
+    // console.log("email", req.body);
+    let user = Database[req.session.user]
+    let useremail = req.session.user
+
+    if (user.friendList.includes(friendEmail)) {
+      let idx = user.friendList.findIndex((email) => {
+        return email == friendEmail;
+      });
+      user.friendList.splice(idx,1);
+      // res.render("reminder/friends", {
+      //   userfriends: user.friendList
+      // });
+      res.redirect("/reminder/friends");
+    } else if (friendEmail == useremail) {
+      res.render("reminder/friends", {
+        err: "You cannot delete yourself",
+        userfriends: user.friendList
+      });
+    } else {
+      res.render("reminder/friends", {
+        err: "Email does not exist",
+        userfriends: user.friendList
+      });
+    }
+  },
+
 
   listFriendReminder: function (req, res) {
     let friendEmail = req.params.email;
     let reminderToFind = req.params.id;
-    let userEmail = req.session.user;
+    // let userEmail = req.session.user;
+    console.log("friend email: ", friendEmail)
 
     let searchResult = Database[friendEmail].reminders.find(
       (reminder) => {
@@ -186,10 +221,14 @@ let remindersController = {
       }
     );
 
+    
     res.render("reminder/single-reminder", {
       reminderItem: searchResult,
+      // userEmail:userEmail
+      friendEmail:friendEmail
+      
     });
-  }
+  },
 };
 
 

@@ -6,12 +6,13 @@ let tagController = {
   add: function (req, res) {
     let tagName = req.body.tag_name;
     let tagID = req.params.id;
+    let user = Database[req.session.user];
 
-    let searchResultID = Database["cindy@gmail.com"].reminders.findIndex((reminder) => {
+    let searchResultID = user.reminders.findIndex((reminder) => {
       return reminder.id == tagID;
     });
 
-    let searchReminder = Database["cindy@gmail.com"].reminders[searchResultID];
+    let searchReminder = user.reminders[searchResultID];
     
     console.log(searchReminder);
     let newtag = new MakeTag(searchReminder.tag.length + 1, tagName);
@@ -29,7 +30,7 @@ let tagController = {
     let deleteId = req.params.id;
     let tagId = req.body.id;
 
-    let searchResult = Database["cindy@gmail.com"].reminders.find((reminder) => {
+    let searchResult = user.reminders.find((reminder) => {
       return reminder.id == deleteId;
     });
 
