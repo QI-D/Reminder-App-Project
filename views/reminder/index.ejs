@@ -1,9 +1,11 @@
+<img src = <%= photoUrl %> class="rounded-circle z-depth-2 float-right">
 <div class="container">
   <h1 class="page-header">Reminders</h1>
 
   <ul class="list-group">
     <% reminders.forEach(function (reminderItem) { %>
     <li class="list-group-item">
+      <img src = <%= photoUrl %> class="rounded-circle z-depth-2 float-left" height=50px, width=50px>
       <strong><%= reminderItem.title %>: </strong>
       <%= reminderItem.description %>
       || Completed:
@@ -23,6 +25,7 @@
     <% for(let i=0; i< others.length; i++) { %>
       <% for(let j=0; j< others[i].reminders.length; j++) { %>
       <li class="list-group-item">
+        <img src = <%= photoUrl %> class="rounded-circle z-depth-2 float-left" height=50px, width=50px>
         <strong><%= others[i].reminders[j].title %>: </strong>
         <%= others[i].reminders[j].description %>
       || Completed:

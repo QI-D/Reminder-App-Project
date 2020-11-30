@@ -34,13 +34,16 @@ class MakeUser {
     id,
     email,
     password,
+    photo,
     reminders = null,
     friendList = null,
-    videoList = null
+    videoList = null,
+    
   ) {
     this.id = id;
     this.email = email;
     this.password = password;
+    this.photo = photo
     this.reminders = reminders == null ? [] : reminders;
     this.friendList = friendList == null ? [] : friendList;
     this.videoList = videoList == null ? [] : videoList;

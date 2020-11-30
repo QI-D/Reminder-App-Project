@@ -20,8 +20,10 @@ let remindersController = {
     res.render("reminder/index", {
       reminders: user.reminders,
       others: friendsList,
-    });
+      photoUrl: user.photo
+    })
   },
+  
 
   // list: function (req, res) {
   //   res.locals.url = req.url;
