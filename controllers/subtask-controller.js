@@ -34,6 +34,7 @@ let subtaskController = {
   delete: function (req, res) {
     let deleteId = req.params.id;
     let subtaskId = req.body.id;
+    let user = Database[req.session.user];
 
     //get a single reminder from reminder list
     let searchResult = user.reminders.find((reminder) => {

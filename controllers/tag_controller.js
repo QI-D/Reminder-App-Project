@@ -29,6 +29,7 @@ let tagController = {
   delete: function (req, res) {
     let deleteId = req.params.id;
     let tagId = req.body.id;
+    let user = Database[req.session.user];
 
     let searchResult = user.reminders.find((reminder) => {
       return reminder.id == deleteId;
