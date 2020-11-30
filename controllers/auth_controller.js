@@ -43,7 +43,6 @@ let authController = {
     const email = req.body.email;
     const password = req.body.password;
     const photo = req.body.photo
-    // console.log(await getPhoto(photo))
     if (!database.hasOwnProperty(email)) {
       const newUser = new MakeUser(
         Object.keys(database).length + 1,
@@ -51,7 +50,6 @@ let authController = {
         password,
         await getPhoto(photo)
       );
-      // console.log(photo)
       console.log(newUser)
       database[email] = newUser;
       req.session["user"] = email;
