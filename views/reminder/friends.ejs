@@ -1,0 +1,29 @@
+<div class="container">
+    <form action="/reminder/friends" method="POST">
+        <h3>Friend List</h3>
+        <ul class="list-group">
+            <% for (let i=0; i< userfriends.length;i++) { %>
+                <li class="list-group-item"><%= userfriends[i] %></li>
+            <% } %>
+
+            <!-- <li class="list-group-item">Cras justo odio</li>
+            <li class="list-group-item">Dapibus ac facilisis in</li>
+            <li class="list-group-item">Morbi leo risus</li>
+            <li class="list-group-item">Por ta ac consectetur ac</li>
+            <li class="list-group-item">Vestibulum at eros</li> -->
+        </ul>
+    </form>
+    <form action="/reminder/friends" method="POST">
+        <div class="form-group">
+            <label for="title">Friend's Email</label>
+            <input type="email" class="form-control" id="friendEmail" placeholder="Your Friend's Email" name="friendEmail" required>
+            <% if (locals.err) { %>
+                <p class="bg-danger"><%= err %></p>
+            <% } %>
+            <button type="submit" class="btn btn-primary" name="add" value="add">Add</button>
+            <button type="submit" class="btn btn-danger" name="delete" value="delete">Delete</button>
+        </div>
+
+    </form>
+
+</div>

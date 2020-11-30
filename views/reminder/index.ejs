@@ -1,21 +1,49 @@
+<img src = <%= photoUrl %> class="rounded-circle z-depth-2 float-right">
 <div class="container">
-    <h1 class="page-header">Reminders</h1>
-  
+  <h1 class="page-header">Reminders</h1>
+
   <ul class="list-group">
     <% reminders.forEach(function (reminderItem) { %>
-      <li class="list-group-item">
-        <strong><%= reminderItem.title %>: </strong>
-        <%= reminderItem.description %>
-        || Completed:
-        <% if (reminderItem.completed == true) { %>
-          <span class="badge badge-success">True</span>
-        <% } else if (reminderItem.completed == false) { %>
-          <span class="badge badge-danger">False</span>
-        <% } %>
-        <a class="pull-right" href=<%= "/reminder/" + reminderItem.id %>>View</a>
-      </li>
+    <li class="list-group-item">
+      <img src = <%= photoUrl %> class="rounded-circle z-depth-2 float-left" height=50px, width=50px>
+      <strong><%= reminderItem.title %>: </strong>
+      <%= reminderItem.description %>
+      || Completed:
+      <% if (reminderItem.completed == true) { %>
+      <span class="badge badge-success">True</span>
+      <% } else if (reminderItem.completed == false) { %>
+      <span class="badge badge-danger">False</span>
+      <% } %>
+      <a class="pull-right" href=<%= "/reminder/" + reminderItem.id %>>View</a>
+    </li>
     <% }) %>
   </ul>
+
+  <h2>Friends' reminders</h2>
+  <!-- <p><%= others %></p> -->
+  <ul class="list-group">
+    <% for(let i=0; i< others.length; i++) { %>
+      <% for(let j=0; j< others[i].reminders.length; j++) { %>
+      <li class="list-group-item">
+        <img src = <%= photoUrl %> class="rounded-circle z-depth-2 float-left" height=50px, width=50px>
+        <strong><%= others[i].reminders[j].title %>: </strong>
+        <%= others[i].reminders[j].description %>
+      || Completed:
+      <% if (others[i].reminders[j].completed == true) { %>
+        <span class="badge badge-success">True</span>
+        <% } else if (others[i].reminders[j].completed == false) { %>
+        <span class="badge badge-danger">False</span>
+        <% } %>
+
+        <a class="pull-right" href=<%= "/reminder/" + others[i].email + "/" + others[i].reminders[j].id %>>View</a>
+      </li>
+
+    
+    <% } }%>
+    
+
+
+  </ul>
+
   
-  </div>
-  
+</div>

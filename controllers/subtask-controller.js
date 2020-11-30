@@ -7,14 +7,15 @@ let subtaskController = {
     // get user input for subtask and reminder id
     let subtaskMsg = req.body.subtask__msg;
     let subtaskToFind = req.params.id;
+    let user = Database[req.session.user];
 
     // find the index of specific reminder that matched with a reminder id
-    let searchResultID = Database["cindy@gmail.com"].reminders.findIndex((reminder) => {
+    let searchResultID = user.reminders.findIndex((reminder) => {
       return reminder.id == subtaskToFind;
     });
 
     // get spcific reminder
-    let searchReminder = Database["cindy@gmail.com"].reminders[searchResultID];
+    let searchReminder = user.reminders[searchResultID];
 
     console.log(searchReminder);
     // subtask data strcuture
@@ -33,9 +34,10 @@ let subtaskController = {
   delete: function (req, res) {
     let deleteId = req.params.id;
     let subtaskId = req.body.id;
+    let user = Database[req.session.user];
 
     //get a single reminder from reminder list
-    let searchResult = Database["cindy@gmail.com"].reminders.find((reminder) => {
+    let searchResult = user.reminders.find((reminder) => {
       return reminder.id == deleteId;
     });
 

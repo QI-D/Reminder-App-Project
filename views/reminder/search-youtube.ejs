@@ -1,0 +1,66 @@
+<div class="container">
+
+    <form action="" method="POST">
+        <div class="form-row align-items-center justify-content-center mt-3">
+            <div class="col-11 pr-0">
+            <label class="sr-only" for="inlineFormInputGroup">Youtube videos</label>
+                <div class="input-group mb-2 ">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="fas fa-search"></i></div>
+                </div>
+                <input type="text" class="form-control" id="inlineFormInputGroup" name="searchTerm" placeholder="Search for Your Favorite video">
+                </div>
+            
+        </div>
+            <div class="col-1 p-0">
+                <button type="submit" class="btn btn-info mb-2">Search</button>
+            </div>
+        </div>
+        </form>
+    <div class="youtube-vid youtube--size">
+
+    </div>
+
+    <div class="row justify-content-around">
+        <% if (locals.youtubeData !== null) { %>
+            <% for(const youtube of locals.youtubeData) { %>
+                <div class="col-12 col-sm-6 col-md-4 row justify-content-center justify-content-sm-around ">
+                    <div class="card border-0 mb-3 mr-3" style="width: 15rem;">
+                        <img class="card-img-top rounded pointer" onclick="displayYoutube('<%= youtube.id.videoId %>')" 
+                        src="<%= youtube.snippet.thumbnails.medium.url %>" alt="Card image cap">
+                        <div class="card-body">
+                            <p class="card-text pointer"><%= youtube.snippet.title %></p>
+                            <p class="card-text"><small class="text-muted"><%= youtube.snippet.channelTitle %></small></p>
+                            <form action="/reminders/ytvideos/add" method="POST" class="row justify-content-end">
+                                <input type="hidden" value="<%=youtube.id.videoId %>" name="ytvideoId">
+                                <input type="hidden" value="<%= youtube.snippet.title %>" name="ytvideoTitle">
+                                <input type="hidden" value="<%= youtube.snippet.thumbnails.medium.url %>" name="ytvideoImg">
+                                <button class="card-text btn btn-info p-0" data-toggle="modal" data-target="#youtubeModal">
+                                    <small><i class="far fa-star text-warning "></i> Add to Favorites</small>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        <% } %>
+    </div>
+</div>
+
+
+<div class="vid vid--fixed">
+    <ul class="vid__relative">
+        <% if(locals.userVideoList.length > 0 ) { %>
+            <% for(const video of locals.userVideoList) { %>
+            <li class="media-vid">
+                <img width=90 height=90 src="<%= video.vidImg %>" class="mr-3 img-thumbnail pointer" alt="Youtube Thnumbnail" onclick="displayYoutube('<%= video.vidId %>')" >
+                <p class="mt-0 pointer" onclick="displayYoutube('<%= video.vidId %>')"><%= video.title %></p>
+            </li>
+            <% } %>
+        <% } %>
+    </ul>
+</div>
+
+<button type="button" class="btn btn-secondary btn--absolute"> 
+    <i class="fab fa-youtube btn--color"></i> favorites
+ </button>

@@ -100,6 +100,7 @@
   
   .testimonials .testimonial-item img {
     max-width: 12rem;
+    
     box-shadow: 0px 5px 5px 0px #adb5bd;
   }
   
@@ -133,4 +134,10 @@
   .form-signin .checkbox{
     margin-bottom: 10px;
     margin-top: 10px;
+  }
+  body {
+    background-image: url('img/bg1.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
   }
