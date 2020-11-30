@@ -13,7 +13,7 @@ let authController = {
     console.log("login", req.body);
 
     if (database.hasOwnProperty(email)) {
-      if (database[email].psw === password) {
+      if (database[email].password === password) {
         req.session["user"] = email;
         res.redirect("/reminders");
       } else {
