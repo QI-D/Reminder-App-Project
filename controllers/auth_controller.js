@@ -42,7 +42,7 @@ let authController = {
     // implement
     const email = req.body.email;
     const password = req.body.password;
-    const photo = req.body.photo
+    const photo = req.body.photo;
     if (!database.hasOwnProperty(email)) {
       const newUser = new MakeUser(
         Object.keys(database).length + 1,
@@ -50,18 +50,21 @@ let authController = {
         password,
         await getPhoto(photo)
       );
-      console.log(newUser)
+      console.log(newUser);
       database[email] = newUser;
       req.session["user"] = email;
       res.redirect("/reminders");
     } else {
       res.render("auth/register", {
         useremail: "",
-        err: "email has been registered"
+        err: "email has been registered",
       });
     }
   },
-
+  logout: (req, res) => {
+    req.session = null;
+    res.redirect("/login");
+  },
 };
 
 module.exports = authController;
