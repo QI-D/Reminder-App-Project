@@ -1,13 +1,49 @@
 <div class="container">
-  <form action="/reminder" method="POST">
-    <div class="form-group">
-      <label for="title">Title</label>
-      <input type="text" class="form-control" id="titleInput" placeholder="Title" name="title">
-    </div>
-    <div class="form-group">
-      <label for="description">Description</label>
-      <textarea class="form-control" id="descriptionInput" rows="3" placeholder="Description" name="description"></textarea>
-    </div>
-    <button type="submit" class="btn btn-default">Submit</button>
-  </form>
+    <form action="/reminders" method="POST">
+
+      <!-- title -->
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" class="form-control" id="titleInput" placeholder="Title" name="title">
+      </div>
+
+      <!-- description -->
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea class="form-control" id="descriptionInput" rows="3" placeholder="Description" name="description"></textarea>
+      </div>
+
+      <!-- tag -->
+      <h5 class="mb-3">
+        <i class="fas fa-tags"></i> 
+        Tags 
+        <span class="text-primary create__tag " style="cursor: pointer">
+          add <small><i class="fas fa-plus"></i></small>
+        </span>
+        <span class="text-danger delete__tag" style="cursor: pointer">
+          delete <small><i class="fas fa-minus-circle"></i></small>
+        </span>
+      </h5>
+
+        <div class="new__tag">
+        </div>
+
+      <!-- subtask  -->
+      <h5> 
+        <i class="fas fa-tasks"></i> Subtasks 
+        <span class="text-primary create__subtask" style="cursor: pointer">
+          add <small><i class="fas fa-plus"></i></small>
+        </span>
+        <span class="text-danger delete__subtask" style="cursor: pointer">
+          delete <small><i class="fas fa-minus-circle"></i></small>
+        </span>
+      </h5>
+
+          <div class="new__subtask">
+          </div>
+        
+      <!-- submit button -->
+      <button type="submit" class="btn btn-success">Submit</button>
+    </form>
 </div>
+  
