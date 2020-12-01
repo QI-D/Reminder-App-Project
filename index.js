@@ -50,9 +50,9 @@ app.get("/", (req, res) => {
 });
 
 // Case xxx: friends
-app.get("/reminder/friends",authCheck, reminderController.showfriend);
+app.get("/reminder/friends", authCheck, reminderController.showfriend);
 
-app.post("/reminder/friends",authCheck, buttonCheck);
+app.post("/reminder/friends", authCheck, buttonCheck);
 
 // app.post("/reminder/friends",authCheck,reminderController.removeFriend);
 
@@ -79,7 +79,11 @@ app.get("/reminder/:id", authCheck, reminderController.listOne);
 // Case 6: User wnats to EDIT an individual reminder
 app.get("/reminder/:id/edit", authCheck, reminderController.edit);
 
-app.get("/reminder/:email/:id", authCheck, reminderController.listFriendReminder);
+app.get(
+  "/reminder/:email/:id",
+  authCheck,
+  reminderController.listFriendReminder
+);
 
 //Case 7: User clicks the update button from Case 6, and expects their reminder to be updated
 app.post("/reminder/update/:id", authCheck, reminderController.update);
@@ -99,9 +103,8 @@ app.post("/register", authController.registerSubmit);
 //Case 12: User wants to login with account info
 app.post("/login", authController.loginSubmit);
 
-
-
-
+// Case 13: User wants to logout
+app.post("/logout", authController.logout);
 
 //======= Subtask =============
 
@@ -134,10 +137,6 @@ youtubeApp.post(app);
 
 // Case 3: User wants add their favorite videos
 youtubeApp.add(app);
-
-
-
-
 
 // web service request through port 3000
 app.listen(3000, () => {
