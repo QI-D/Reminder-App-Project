@@ -4,15 +4,19 @@ const { getPhoto } = require("./unsplashAPI_controller");
 
 let authController = {
   login: (req, res) => {
-    res.render("auth/login");
+    let useremail = req.session.user;
+
+    if (useremail) {
+      res.redirect("/reminders");
+    } else {
+      res.render("auth/login");
+    }
   },
 
   loginSubmit: (req, res) => {
     // implement
     let email = req.body.email;
     let password = req.body.password;
-
-    console.log("login", req.body);
 
     if (database.hasOwnProperty(email)) {
       if (database[email].password === password) {
@@ -32,18 +36,17 @@ let authController = {
 
   register: (req, res) => {
     // get email from request
-    let useremail = req.query.email;
+    let userEmail = req.query.email;
 
     //send user email to signup page
-    res.render("auth/register", { useremail: useremail });
+    res.render("auth/register", { userEmail: userEmail });
   },
 
   registerSubmit: async (req, res) => {
     // implement
     const email = req.body.email;
     const password = req.body.password;
-    const photo = req.body.photo
-    // console.log(await getPhoto(photo))
+    const photo = req.body.photo;
     if (!database.hasOwnProperty(email)) {
       const newUser = new MakeUser(
         Object.keys(database).length + 1,
@@ -51,19 +54,21 @@ let authController = {
         password,
         await getPhoto(photo)
       );
-      // console.log(photo)
-      console.log(newUser)
+      console.log(newUser);
       database[email] = newUser;
       req.session["user"] = email;
       res.redirect("/reminders");
     } else {
       res.render("auth/register", {
         useremail: "",
-        err: "email has been registered"
+        err: "email has been registered",
       });
     }
   },
-
+  logout: (req, res) => {
+    req.session = null;
+    res.redirect("/login");
+  },
 };
 
 module.exports = authController;
