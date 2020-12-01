@@ -17,6 +17,7 @@ let middlewares = {
     if (req.session.user) {
       if (database[req.session.user]) {
         req.currentUser = database[req.session.user];
+        res.locals.currentUser = req.currentUser;
         next();
       } else {
         next();

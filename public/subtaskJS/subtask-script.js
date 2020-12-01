@@ -64,6 +64,8 @@ function displayYoutube(link) {
 let favoriteBtn = document.querySelector(".btn--absolute");
 let favoriteList = document.querySelector(".vid");
 
-favoriteBtn.addEventListener("click", () => {
-  favoriteList.classList.toggle("vid__list");
-});
+if (favoriteBtn) {
+  favoriteBtn.addEventListener("click", () => {
+    favoriteList.classList.toggle("vid__list");
+  });
+}

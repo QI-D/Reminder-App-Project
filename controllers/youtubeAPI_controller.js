@@ -6,6 +6,9 @@ let youtubeAPIController = {
   list: (req, res) => {
     res.locals.youtubeData = null;
     res.locals.userVideoList = req.currentUser.videoList;
+    res.locals.isclicked = "youtubeClicked";
+    res.locals.url = req.url;
+    console.log(res.locals.currentUser);
     res.render("reminder/search-youtube.ejs");
     //
   },
@@ -18,7 +21,6 @@ let youtubeAPIController = {
       );
       const json_data = await data.json();
       const youtubeData = json_data.items;
-      console.log(youtubeData);
       res.locals.youtubeData = youtubeData;
       res.locals.userVideoList = req.currentUser.videoList;
       res.render("reminder/search-youtube.ejs");
@@ -41,8 +43,3 @@ let youtubeAPIController = {
 };
 
 module.exports = youtubeAPIController;
-
-// <% for(const video of locals.userVideoList) { %>
-//   <%= video.title %>
-//   <%= video.vidId %>
-// <% }%>
