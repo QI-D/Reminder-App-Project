@@ -1,16 +1,3 @@
-// const express = require("express");
-// const ejsLayouts = require("express-ejs-layouts");
-
-// const reminderController = require("./controllers/reminder_controller");
-
-// express is going to return back to us a web server
-// const app = express();
-// const subtaskApp = require("./subtask-routes.js");
-// const timeApp = require("./time-routes");
-// const tagApp = require("./tag-routes");
-
-// app.use(express.static(__dirname + "/public"));
-
 const express = require("express");
 const app = express();
 const path = require("path");
@@ -44,66 +31,54 @@ app.use(
 
 app.use(middlewares.currenUser);
 
-//Case 1: user goes to localhost: 8080 -> information about site, marketing, login page ...
+//Case 1: user goes to localhost -> information about site, marketing, login page ...
 app.get("/", (req, res) => {
   res.send("Go to http://localhost:3000/reminders");
 });
 
-// Case xxx: friends
+// Case 2: user goes to localhost/reminder/friends -> Friends list, friend search box, add/delete button
 app.get("/reminder/friends", authCheck, reminderController.showfriend);
 
+//Case 3: user add or remove friend from friend list by entering friend email
 app.post("/reminder/friends", authCheck, buttonCheck);
 
-// app.post("/reminder/friends",authCheck,reminderController.removeFriend);
-
-//Case 2: User goes to Localhost:8080/reminder -> show a list of reminders
+//Case 4: User goes to Localhost:8080/reminder -> show a list of reminders
 app.get("/reminders/", authCheck, reminderController.list);
 
-//Case 3: user goes to localhost:8080/reminder -> show a CREATE REMINDER RAGE
+//Case 5: user goes to localhost:8080/reminder -> show a CREATE REMINDER RAGE
 app.get("/reminder/new", authCheck, reminderController.new);
 
-//Case 4: User SENDS NEW REMINDER DATA TO US (CREATING A REMINDER)
-app.post(
-  "/reminders",
-  authCheck,
-  middlewares.parseBodyToArr,
-  reminderController.create
-);
+//Case 6: User SENDS NEW REMINDER DATA TO US (CREATING A REMINDER)
+app.post("/reminders", authCheck, middlewares.parseBodyToArr, reminderController.create);
 
-// Case 5: User wants to see an individual reminder
+// Case 7: User wants to see an individual reminder
 app.get("/reminder/:id", authCheck, reminderController.listOne);
 
-//
-// app.get("/reminder/:email/:id", authCheck, reminderController.listFriendReminder);
-
-// Case 6: User wnats to EDIT an individual reminder
+// Case 8: User wnats to EDIT an individual reminder
 app.get("/reminder/:id/edit", authCheck, reminderController.edit);
 
-app.get(
-  "/reminder/:email/:id",
-  authCheck,
-  reminderController.listFriendReminder
-);
+// Case 9: User wants to view a friend reminder
+app.get("/reminder/:email/:id", authCheck, reminderController.listFriendReminder);
 
-//Case 7: User clicks the update button from Case 6, and expects their reminder to be updated
+//Case 10: User clicks the update button from Case 6, and expects their reminder to be updated
 app.post("/reminder/update/:id", authCheck, reminderController.update);
 
-//Case 8: User clicks the delete button and we expect the reminder to be deleted
+//Case 11: User clicks the delete button and we expect the reminder to be deleted
 app.post("/reminder/delete/:id", authCheck, reminderController.delete);
 
-//Case 9: User wants to go to register page
+//Case 12: User wants to go to register page
 app.get("/register", authController.register);
 
-//Case 10: User wants to go to login page
+//Case 13: User wants to go to login page
 app.get("/login", authController.login);
 
-//Case 11: User wants to register for an account
+//Case 14: User wants to register for an account
 app.post("/register", authController.registerSubmit);
 
-//Case 12: User wants to login with account info
+//Case 15: User wants to login with account info
 app.post("/login", authController.loginSubmit);
 
-// Case 13: User wants to logout
+// Case 16: User wants to logout
 app.post("/logout", authController.logout);
 
 //======= Subtask =============

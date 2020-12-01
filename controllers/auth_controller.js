@@ -4,15 +4,19 @@ const { getPhoto } = require("./unsplashAPI_controller");
 
 let authController = {
   login: (req, res) => {
-    res.render("auth/login");
+    let useremail = req.session.user;
+
+    if (useremail) {
+      res.redirect("/reminders");
+    } else {
+      res.render("auth/login");
+    }
   },
 
   loginSubmit: (req, res) => {
     // implement
     let email = req.body.email;
     let password = req.body.password;
-
-    console.log("login", req.body);
 
     if (database.hasOwnProperty(email)) {
       if (database[email].password === password) {
@@ -32,10 +36,10 @@ let authController = {
 
   register: (req, res) => {
     // get email from request
-    let useremail = req.query.email;
+    let userEmail = req.query.email;
 
     //send user email to signup page
-    res.render("auth/register", { useremail: useremail });
+    res.render("auth/register", { userEmail: userEmail });
   },
 
   registerSubmit: async (req, res) => {

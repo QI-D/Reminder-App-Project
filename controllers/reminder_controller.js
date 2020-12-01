@@ -68,7 +68,7 @@ let remindersController = {
   },
 
   listOne: function (req, res) {
-    
+
     let reminderToFind = req.params.id;
     let user = Database[req.session.user];
 
@@ -138,10 +138,6 @@ let remindersController = {
   },
 
   addfriend: function (req, res) {
-    // let buttonclicked=req.body.add;
-
-    // console.log(buttonclicked);
-
 
     res.locals.url = req.url;
     friendEmail = req.body.friendEmail;
@@ -182,7 +178,6 @@ let remindersController = {
     res.locals.url = req.url;
 
     friendEmail = req.body.friendEmail;
-    // console.log("email", req.body);
     let user = Database[req.session.user]
     let useremail = req.session.user
 
@@ -190,10 +185,8 @@ let remindersController = {
       let idx = user.friendList.findIndex((email) => {
         return email == friendEmail;
       });
-      user.friendList.splice(idx,1);
-      // res.render("reminder/friends", {
-      //   userfriends: user.friendList
-      // });
+      user.friendList.splice(idx, 1);
+
       res.redirect("/reminder/friends");
     } else if (friendEmail == useremail) {
       res.render("reminder/friends", {
@@ -210,9 +203,9 @@ let remindersController = {
 
 
   listFriendReminder: function (req, res) {
+
     let friendEmail = req.params.email;
     let reminderToFind = req.params.id;
-    // let userEmail = req.session.user;
     console.log("friend email: ", friendEmail)
 
     let searchResult = Database[friendEmail].reminders.find(
@@ -221,12 +214,9 @@ let remindersController = {
       }
     );
 
-    
     res.render("reminder/single-reminder", {
       reminderItem: searchResult,
-      // userEmail:userEmail
-      friendEmail:friendEmail
-      
+      friendEmail: friendEmail
     });
   },
 };
