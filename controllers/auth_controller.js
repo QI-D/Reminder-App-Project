@@ -4,9 +4,9 @@ const { getPhoto } = require("./unsplashAPI_controller");
 
 let authController = {
   login: (req, res) => {
-    let useremail = req.session.user;
+    let userEmail = req.session.user;
 
-    if (useremail) {
+    if (userEmail) {
       res.redirect("/reminders");
     } else {
       res.render("auth/login");
@@ -59,7 +59,7 @@ let authController = {
       res.redirect("/reminders");
     } else {
       res.render("auth/register", {
-        useremail: "",
+        userEmail: "",
         err: "email has been registered",
       });
     }
