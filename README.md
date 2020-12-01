@@ -15,7 +15,7 @@ Sagarika
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-<img src="./public/img/SocialReminder.png" alt="showcase" width="80">
+<img src="./public/img/SocialReminder.png" alt="showcase">
 
 The goal of the project is to create a Scoial Reminder app.
 
