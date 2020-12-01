@@ -10,6 +10,10 @@
       <a class="nav-item nav-link active" href="/reminders">Reminder List</a>
       <a class="nav-item nav-link" href="/reminder/new">Create</a>
       <a class="nav-item nav-link" href="/reminder/friends">Friends</a>
+      <a class="nav-item nav-link" href="/reminders/ytvideos">
+        <img width=20 src="/img/ytlogo.png" class="img-fluid"></img> 
+        Videos
+      </a>
       <form action="/logout" method="POST" id="logoutForm">
         <a href="javascript:$('#logoutForm').submit();" class="nav-item nav-link">Log out</a>
       </form>
@@ -17,6 +21,10 @@
       <a class="nav-item nav-link" href="/reminders">Reminder List</a>
       <a class="nav-item nav-link active" href="/reminder/new">Create</a>
       <a class="nav-item nav-link" href="/reminder/friends">Friends</a>
+      <a class="nav-item nav-link" href="/reminders/ytvideos">
+        <img width=20 src="/img/ytlogo.png" class="img-fluid"></img> 
+        Videos
+      </a>
       <form action="/logout" method="POST" id="logoutForm">
         <a href="javascript:$('#logoutForm').submit();" class="nav-item nav-link">Log out</a>
       </form>
@@ -24,24 +32,24 @@
       <a class="nav-item nav-link" href="/reminders">Reminder List</a>
       <a class="nav-item nav-link" href="/reminder/new">Create</a>
       <a class="nav-item nav-link active" href="/reminder/friends">Friends</a>
+      <a class="nav-item nav-link" href="/reminders/ytvideos">
+        <img width=20 src="/img/ytlogo.png" class="img-fluid"></img> 
+        Videos
+      </a>
       <form action="/logout" method="POST" id="logoutForm">
         <a href="javascript:$('#logoutForm').submit();" class="nav-item nav-link">Log out</a>
       </form>
-      <% } %>
-
-       <!-- show these routes if current user exist -->
-      <% if(locals.currentUser) { %>
-        <% if ( locals.url == "/reminders/ytvideos") { %>
-          <a class="nav-item nav-link" href="/reminders">Reminder List</a>
-          <a class="nav-item nav-link" href="/reminder/new">Create</a>
-          <a class="nav-item nav-link" href="/reminder/friends">Friends</a>
-          <form action="/logout" method="POST" id="logoutForm">
-            <a href="javascript:$('#logoutForm').submit();" class="nav-item nav-link">Log out</a>
-          </form>
-        <% } %>
-        <a class="nav-item nav-link <%= locals.isclicked === "youtubeClicked" ? "active" : ''  %>" 
-        href="/reminders/ytvideos"><img width=20 src="/img/ytlogo.png"
-            class="img-fluid"></img> Videos</a>
+      <% } else if ( locals.url == "/reminders/ytvideos") { %>
+        <a class="nav-item nav-link" href="/reminders">Reminder List</a>
+        <a class="nav-item nav-link" href="/reminder/new">Create</a>
+        <a class="nav-item nav-link" href="/reminder/friends">Friends</a>
+        <a class="nav-item nav-link active" href="/reminders/ytvideos">
+          <img width=20 src="/img/ytlogo.png" class="img-fluid"></img> 
+          Videos
+        </a>
+        <form action="/logout" method="POST" id="logoutForm">
+          <a href="javascript:$('#logoutForm').submit();" class="nav-item nav-link">Log out</a>
+        </form>
       <% } %>
 
     </div>

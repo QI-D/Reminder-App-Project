@@ -54,7 +54,6 @@ let authController = {
         password,
         await getPhoto(photo)
       );
-      console.log(newUser);
       database[email] = newUser;
       req.session["user"] = email;
       res.redirect("/reminders");

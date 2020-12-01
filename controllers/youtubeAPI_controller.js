@@ -8,16 +8,16 @@ let youtubeAPIController = {
     res.locals.userVideoList = req.currentUser.videoList;
     res.locals.isclicked = "youtubeClicked";
     res.locals.url = req.url;
-    console.log(res.locals.currentUser);
     res.render("reminder/search-youtube.ejs");
     //
   },
   newVideos: async (req, res) => {
     const { searchTerm } = req.body;
+    res.locals.url = req.url;
     const enSearchTerm = encodeURIComponent(searchTerm);
     try {
       const data = await fetch(
-        `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&q=${enSearchTerm}&type=video&key=AIzaSyAf4_tbubtzBl_itVwJNJtf7Ug8P2kto00`
+        `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&q=${enSearchTerm}&type=video&key=AIzaSyAf4_tbubtzBl_itVwJNJtf7Ug8P2kto00`
       );
       const json_data = await data.json();
       const youtubeData = json_data.items;
