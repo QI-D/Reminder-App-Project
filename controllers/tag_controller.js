@@ -13,8 +13,7 @@ let tagController = {
     });
 
     let searchReminder = user.reminders[searchResultID];
-    
-    console.log(searchReminder);
+
     let newtag = new MakeTag(searchReminder.tag.length + 1, tagName);
     // {
     //   id: searchReminder.tag.length + 1,
