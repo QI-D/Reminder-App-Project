@@ -49,7 +49,12 @@ app.get("/reminders/", authCheck, reminderController.list);
 app.get("/reminder/new", authCheck, reminderController.new);
 
 //Case 6: User SENDS NEW REMINDER DATA TO US (CREATING A REMINDER)
-app.post("/reminders", authCheck, middlewares.parseBodyToArr, reminderController.create);
+app.post(
+  "/reminders",
+  authCheck,
+  middlewares.parseBodyToArr,
+  reminderController.create
+);
 
 // Case 7: User wants to see an individual reminder
 app.get("/reminder/:id", authCheck, reminderController.listOne);
@@ -58,7 +63,11 @@ app.get("/reminder/:id", authCheck, reminderController.listOne);
 app.get("/reminder/:id/edit", authCheck, reminderController.edit);
 
 // Case 9: User wants to view a friend reminder
-app.get("/reminder/:email/:id", authCheck, reminderController.listFriendReminder);
+app.get(
+  "/reminder/:email/:id",
+  authCheck,
+  reminderController.listFriendReminder
+);
 
 //Case 10: User clicks the update button from Case 6, and expects their reminder to be updated
 app.post("/reminder/update/:id", authCheck, reminderController.update);
@@ -105,13 +114,13 @@ tagApp.deletePost(app);
 //========= Youtube Api =======
 
 // Case 1: User wants to search for youtube videos
-youtubeApp.get(app);
+youtubeApp.get(app, authCheck);
 
 // Case 2: User gets youtube videos
-youtubeApp.post(app);
+youtubeApp.post(app, authCheck);
 
 // Case 3: User wants add their favorite videos
-youtubeApp.add(app);
+youtubeApp.add(app, authCheck);
 
 // web service request through port 3000
 app.listen(3000, () => {
