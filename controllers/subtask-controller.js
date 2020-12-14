@@ -17,6 +17,7 @@ let subtaskController = {
     // get spcific reminder
     let searchReminder = user.reminders[searchResultID];
 
+    console.log(searchReminder);
     // subtask data strcuture
     let newSubtask = new MakeSubtask(
       searchReminder.subtask.length + 1,
