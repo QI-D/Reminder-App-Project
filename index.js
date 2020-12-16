@@ -17,6 +17,11 @@ const tagApp = require("./tag-routes");
 const { loginPage } = require("./controllers/reminder_controller");
 const youtubeApp = require("./youtubeAPI");
 
+// mongodb
+let mongoose=require("mongoose");
+const dbUrl="mongodb+srv://user:214300@cluster0.atxvw.mongodb.net/<dbname>?retryWrites=true&w=majority";
+
+
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: false }));
 app.use(ejsLayouts);
@@ -125,7 +130,21 @@ youtubeApp.post(app);
 // Case 3: User wants add their favorite videos
 youtubeApp.add(app);
 
-// web service request through port 3000
-app.listen(3000, () => {
-  console.log("Our server is running on http://localhost:3000/ 🚀");
+module.exports.connection=mongoose.connect(dbUrl,{ useNewUrlParser: true, useUnifiedTopology: true },(err)=>{
+  if(err){
+    console.log(err);
+  }else{
+    console.log('a user connected');
+    // web service request through port 3000
+    app.listen(3000, () => {
+      console.log("Our server is running on http://localhost:3000/ 🚀");
+    });
+
+  }
+  
 });
+
+// web service request through port 3000
+// app.listen(3000, () => {
+//   console.log("Our server is running on http://localhost:3000/ 🚀");
+// });

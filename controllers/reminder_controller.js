@@ -1,5 +1,6 @@
 const { MakeReminder, MakeSubtask, MakeTag } = require("../make-data.js");
 const Database = require("../database.js");
+// let Database=require("../index").connection;
 const url = require("url");
 // exstract functions
 
@@ -21,6 +22,7 @@ let remindersController = {
       others: friendsList,
       photoUrl: user.photo
     })
+    
   },
 
   new: function (req, res) {
