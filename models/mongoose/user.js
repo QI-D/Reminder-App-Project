@@ -5,7 +5,11 @@ const mongoose=require("mongoose");
 const userSchema=new mongoose.Schema({
     email:String,
     password:String,
-    profilePhotoUrl:String
+    photo:String,
+    reminders:{ type: Array, default: [] },
+    friendList:{ type: Array, default: [] },
+    videoList:{ type: Array, default: [] },
+
 
 });
 

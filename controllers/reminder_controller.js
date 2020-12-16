@@ -1,7 +1,8 @@
 const { MakeReminder, MakeSubtask, MakeTag } = require("../make-data.js");
-const Database = require("../database.js");
-// let Database=require("../index").connection;
+// const Database = require("../database.js");
+let Database = require("../models/mongoose/user").userModel;
 const url = require("url");
+
 // exstract functions
 
 let remindersController = {
@@ -9,20 +10,60 @@ let remindersController = {
   list: function (req, res) {
     res.locals.url = req.url;
     console.log(req.session['user']);
-    let user = Database[req.session.user];
-    let friends = user.friendList;
-    console.log(friends);
-    let friendsList = [];
-    for (friend of friends) {
-      friendsList.push(Database[friend]);
-    }
 
-    res.render("reminder/index", {
-      reminders: user.reminders,
-      others: friendsList,
-      photoUrl: user.photo
-    })
-    
+    ///////////////////////////////////////
+    // old version
+    // let user = Database[req.session.user];
+    // let friends = user.friendList;
+    // console.log(friends);
+    // let friendsList = [];
+    // for (friend of friends) {
+    //   friendsList.push(Database[friend]);
+    // }
+
+    // res.render("reminder/index", {
+    //   reminders: user.reminders,
+    //   others: friendsList,
+    //   photoUrl: user.photo
+    // });
+
+    ///////////////////////////////////////
+    // real database version
+    Database.findOne({ email: req.session['user'] })
+      .then(user => {
+        let friends = user.friendList;
+        console.log(friends);
+        let friendsList = [];
+        for (friend of friends) {
+          Database.findOne({ email: friend }, (err, friendDoc) => {
+            if (err) {
+              console.log(err);
+              return;
+            } else {
+              friendsList.push({
+                email: friendDoc.email,
+                photo: friendDoc.photo,
+                reminders: friendDoc.reminders,
+              });
+
+            }
+          });
+
+        }
+        return [user, friendsList];
+
+      })
+      .then(([user, friendsList]) => {
+        res.render("reminder/index", {
+          reminders: user.reminders,
+          others: friendsList,
+          photoUrl: user.photo
+        });
+
+      })
+      .catch(err => console.log(err));
+
+
   },
 
   new: function (req, res) {
@@ -70,7 +111,7 @@ let remindersController = {
   },
 
   listOne: function (req, res) {
-    
+
     let reminderToFind = req.params.id;
     let user = Database[req.session.user];
 
@@ -192,7 +233,7 @@ let remindersController = {
       let idx = user.friendList.findIndex((email) => {
         return email == friendEmail;
       });
-      user.friendList.splice(idx,1);
+      user.friendList.splice(idx, 1);
       // res.render("reminder/friends", {
       //   userfriends: user.friendList
       // });
@@ -224,12 +265,12 @@ let remindersController = {
       }
     );
 
-    
+
     res.render("reminder/single-reminder", {
       reminderItem: searchResult,
       // userEmail:userEmail
-      friendEmail:friendEmail
-      
+      friendEmail: friendEmail
+
     });
   },
 };

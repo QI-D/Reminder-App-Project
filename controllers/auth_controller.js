@@ -1,11 +1,11 @@
 // let database = require("../database");
-let database=require("../index").connection;
+let database = require("../index").connection;
 // const { MakeUser } = require("../make-data.js");
 const { getPhoto } = require("./unsplashAPI_controller");
 // const mongoose=require("mongoose");
 
 // let User=mongoose.model("Users",{
-  
+
 //   email:String,
 //   password:String,
 //   photo:String
@@ -57,23 +57,36 @@ let authController = {
     // const photo = req.body.photo;
     const photo = await getPhoto(req.body.photo);
 
-    let newUser=new user({
-      email:email,
-      password:password,
-      profilePhotoUrl:photo
+    let newUser = new user({
+      email: email,
+      password: password,
+      photo: photo
     });
 
     //save the new user to mongodb
-    newUser.save((err)=>{
-      if(err){
-        console.log(err);
-        return;
-      }else{
+    // newUser.save((err)=>{
+    //   if(err){
+    //     console.log(err);
+    //     return;
+    //   }else{
+    //     console.log("saved.");
+    //     req.session["user"] = email;
+    //     res.redirect("/reminders");
+    //   }
+    // });
+
+    newUser.save()
+      .then(() => {
         console.log("saved.");
         req.session["user"] = email;
-        res.redirect("/reminders");
-      }
-    });
+        // create an empty reminder record and friends List record
+      })
+      .then(()=>res.redirect("/reminders"))
+      .catch(err => {
+        console.log(err);
+        return;
+
+      });
 
 
     // if (!database.hasOwnProperty(email)) {
