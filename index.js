@@ -34,7 +34,7 @@ app.use(
   })
 );
 
-app.use(middlewares.currenUser);
+// app.use(middlewares.currenUser);
 
 //Case 1: user goes to localhost: 8080 -> information about site, marketing, login page ...
 app.get("/", (req, res) => {

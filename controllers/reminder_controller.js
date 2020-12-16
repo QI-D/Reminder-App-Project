@@ -75,36 +75,39 @@ let remindersController = {
   },
 
   create: function (req, res) {
-    const subTaskArr = [];
-    const tagsArr = [];
+    // const subTaskArr = [];
+    // const tagsArr = [];
 
-    const { reminder_subtask, reminder_tag } = req.body;
+    // const { reminder_subtask, reminder_tag } = req.body;
 
-    // Check if the subtask req exist
-    if (reminder_subtask) {
-      reminder_subtask.forEach((description, subtask_id) => {
-        subTaskArr.push(new MakeSubtask(subtask_id, description));
-      });
-    }
+    // // Check if the subtask req exist
+    // if (reminder_subtask) {
+    //   reminder_subtask.forEach((description, subtask_id) => {
+    //     subTaskArr.push(new MakeSubtask(subtask_id, description));
+    //   });
+    // }
 
-    // Check if the tag req exist
-    if (reminder_tag) {
-      reminder_tag.forEach((description, tag_id) => {
-        tagsArr.push(new MakeTag(tag_id, description));
-      });
-    }
-    let user = Database[req.session.user];
-    const reminder = new MakeReminder(
-      user.reminders.length + 1,
-      req.body.title,
-      req.body.description,
-      subTaskArr,
-      tagsArr
-    );
+    // // Check if the tag req exist
+    // if (reminder_tag) {
+    //   reminder_tag.forEach((description, tag_id) => {
+    //     tagsArr.push(new MakeTag(tag_id, description));
+    //   });
+    // }
+    // let user = Database[req.session.user];
+    // const reminder = new MakeReminder(
+    //   user.reminders.length + 1,
+    //   req.body.title,
+    //   req.body.description,
+    //   subTaskArr,
+    //   tagsArr
+    // );
 
-    user.reminders.push(reminder);
+    // user.reminders.push(reminder);
 
-    console.log(user.reminders);
+    
+    // console.log(user.reminders);
+
+    console.log("back to /reminders page");
 
 
     res.redirect("/reminders");
