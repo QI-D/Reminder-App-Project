@@ -7,9 +7,9 @@ const reminderSchema=new mongoose.Schema({
     title:String,
     description:String,
     completed:Boolean,
-    subtask:Array,
-    tag:Array,
-    time:Number
+    subtask:{ type: Array, default: [] },
+    tag:{ type: Array, default: [] },
+    time:{ type: Number, default: Date.now() }
 });
 
 module.exports.reminderModel=mongoose.model("Reminder",reminderSchema);

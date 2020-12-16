@@ -14,7 +14,7 @@
       <% } else if (reminderItem.completed == false) { %>
       <span class="badge badge-danger">False</span>
       <% } %>
-      <a class="pull-right" href=<%= "/reminder/" + reminderItem.id %>>View</a>
+      <a class="pull-right" href=<%= "/reminder/" + reminderItem._id %>>View</a>
     </li>
     <% }) %>
   </ul>
@@ -35,7 +35,7 @@
         <span class="badge badge-danger">False</span>
         <% } %>
 
-        <a class="pull-right" href=<%= "/reminder/" + others[i].email + "/" + others[i].reminders[j].id %>>View</a>
+        <a class="pull-right" href=<%= "/reminder/" + others[i].email + "/" + others[i].reminders[j]._id %>>View</a>
       </li>
 
     

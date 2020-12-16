@@ -1,6 +1,7 @@
 const { MakeReminder, MakeSubtask, MakeTag } = require("../make-data.js");
 // const Database = require("../database.js");
 let Database = require("../models/mongoose/user").userModel;
+let reminder = require("../models/mongoose/reminder").reminderModel;
 const url = require("url");
 
 // exstract functions
@@ -104,33 +105,84 @@ let remindersController = {
 
     // user.reminders.push(reminder);
 
-    
+
     // console.log(user.reminders);
 
     console.log("back to /reminders page");
 
+    Database.findOne({ email: req.session['user'] })
+      .then(() => {
+        const subTaskArr = [];
+        const tagsArr = [];
+        console.log(req.body);
+        const { reminder_subtask, reminder_tag } = req.body;
 
-    res.redirect("/reminders");
+        // Check if the subtask req exist
+        if (reminder_subtask) {
+          reminder_subtask.forEach((description, subtask_id) => {
+            subTaskArr.push(new MakeSubtask(subtask_id, description));
+          });
+        }
+
+        // Check if the tag req exist
+        if (reminder_tag) {
+          reminder_tag.forEach((description, tag_id) => {
+            tagsArr.push(new MakeTag(tag_id, description));
+          });
+        }
+
+        return [subTaskArr, tagsArr];
+      })
+      .then(([subTaskArr, tagsArr]) => {
+        const newReminder = new reminder({
+          email: req.session['user'],
+          title: req.body.title,
+          description: req.body.description,
+          subtask: subTaskArr,
+          tag: tagsArr
+        });
+
+        newReminder.save();
+        return newReminder;
+
+      })
+      .then(newReminder => {
+        //update user.reminders
+        Database.updateOne({ email: req.session['user'] },
+          { $push: { reminders: newReminder } },(err)=>{
+            if(err){
+              console.log(err);
+              return;
+            }else{
+              res.redirect("/reminders");
+            }
+          }
+        );
+      })
+      .catch(err => console.log(err));
+
   },
+
 
   listOne: function (req, res) {
 
-    let reminderToFind = req.params.id;
-    let user = Database[req.session.user];
+    // let reminderToFind = req.params.id;
+    // let user = Database[req.session.user];
 
-    let searchResult = user.reminders.find(
-      (reminder) => {
-        return reminder.id == reminderToFind;
-      }
-    );
+    // let searchResult = user.reminders.find(
+    //   (reminder) => {
+    //     return reminder.id == reminderToFind;
+    //   }
+    // );
 
-    if (searchResult != undefined) {
-      res.render("reminder/single-reminder", {
-        reminderItem: searchResult,
-      });
-    } else {
-      res.redirect("/reminders");
-    }
+    // if (searchResult != undefined) {
+    //   res.render("reminder/single-reminder", {
+    //     reminderItem: searchResult,
+    //   });
+    // } else {
+    //   res.redirect("/reminders");
+    // }
+    console.log("list One!");
   },
 
   edit: function (req, res) {
