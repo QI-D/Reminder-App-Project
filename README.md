@@ -17,7 +17,7 @@ Sagarika
 ## About The Project
 <img src="./public/img/SocialReminder.png" alt="showcase">
 
-The goal of the project is to create a Scoial Reminder app.
+The goal of the project is to create a Social Reminder app.
 
 Home Page: This a marketing page where we introduce how our website looks like and show what our users have commented.  
 
@@ -91,28 +91,3 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ## Contact
 
 Project Link: [https://github.com/AKA-ZSZ/Reminder-App-Project](https://github.com/AKA-ZSZ/Reminder-App-Project)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
