@@ -10,7 +10,7 @@ let remindersController = {
 
   list: function (req, res) {
     res.locals.url = req.url;
-    console.log(req.session['user']);
+    // console.log(req.session['user']);
 
     ///////////////////////////////////////
     // old version
@@ -33,34 +33,88 @@ let remindersController = {
     Database.findOne({ email: req.session['user'] })
       .then(user => {
         let friends = user.friendList;
-        console.log(friends);
+        // console.log(friends);
         let friendsList = [];
-        for (friend of friends) {
-          Database.findOne({ email: friend }, (err, friendDoc) => {
+
+        for (let friend of friends) {
+          // Database.findOne({ email: friend }, (err, friendDoc) => {
+          //   if (err) {
+          //     console.log(err);
+          //     return;
+          //   } else {
+          //     friendsList.push({
+          //       email: friendDoc.email,
+          //       photo: friendDoc.photo,
+          //       reminders: friendDoc.reminders,
+          //     });
+
+
+          //   }
+          // });
+          reminder.find({ email: friend }, (err, friendDocs) => {
             if (err) {
               console.log(err);
               return;
             } else {
-              friendsList.push({
-                email: friendDoc.email,
-                photo: friendDoc.photo,
-                reminders: friendDoc.reminders,
+              friendDocs.forEach(doc => {
+                friendsList.push(doc.toObject());
+
               });
 
             }
           });
 
         }
-        return [user, friendsList];
+        // return [user, friendsList];
+
+        return [friendsList, user.photo];
 
       })
-      .then(([user, friendsList]) => {
-        res.render("reminder/index", {
-          reminders: user.reminders,
-          others: friendsList,
-          photoUrl: user.photo
-        });
+      // .then(([friendsList,photo]) => {
+      //   let remindersList = [];
+      //   reminder.find({ email: req.session['user'] }, (err, docs) => {
+      //     console.log("docs:",docs);
+      //     if (err) {
+      //       console.log(err);
+      //       return;
+      //     } else {
+      //       // console.log("docs:", docs);
 
+      //       docs.forEach(doc => {
+      //         remindersList.push(doc.toObject());
+      //       });
+
+      //     }
+
+      //   });
+
+      //   return [remindersList, friendsList,photo];
+      // })
+      .then(([friendsList, photo]) => {
+
+        // console.log([remindersList, friendsList,photo]);
+
+        let remindersList = [];
+        reminder.find({ email: req.session['user'] }, (err, docs) => {
+          // console.log("docs:", docs);
+          if (err) {
+            console.log(err);
+            return;
+          } else {
+            // console.log("docs:", docs);
+
+            docs.forEach(doc => {
+              remindersList.push(doc.toObject());
+            });
+            res.render("reminder/index", {
+              reminders: remindersList,
+              others: friendsList,
+              photoUrl: photo
+            });
+
+          }
+
+        });
       })
       .catch(err => console.log(err));
 
@@ -108,15 +162,14 @@ let remindersController = {
 
     // console.log(user.reminders);
 
-    console.log("back to /reminders page");
+    // console.log("back to /reminders page");
 
     Database.findOne({ email: req.session['user'] })
       .then(() => {
         const subTaskArr = [];
         const tagsArr = [];
-        console.log(req.body);
+        // console.log(req.body);
         const { reminder_subtask, reminder_tag } = req.body;
-
         // Check if the subtask req exist
         if (reminder_subtask) {
           reminder_subtask.forEach((description, subtask_id) => {
@@ -133,8 +186,8 @@ let remindersController = {
 
         return [subTaskArr, tagsArr];
       })
-      .then(([subTaskArr, tagsArr]) => {
-        const newReminder = new reminder({
+      .then( async function([subTaskArr, tagsArr]){
+        const newReminder = await new reminder({
           email: req.session['user'],
           title: req.body.title,
           description: req.body.description,
@@ -142,18 +195,18 @@ let remindersController = {
           tag: tagsArr
         });
 
-        newReminder.save();
+        await newReminder.save();
         return newReminder;
 
       })
       .then(newReminder => {
         //update user.reminders
         Database.updateOne({ email: req.session['user'] },
-          { $push: { reminders: newReminder } },(err)=>{
-            if(err){
+          { $push: { reminders: newReminder._id } }, (err) => {
+            if (err) {
               console.log(err);
               return;
-            }else{
+            } else {
               res.redirect("/reminders");
             }
           }
@@ -272,7 +325,7 @@ let remindersController = {
     // The database must have that user with the friendEmail
     // Database.friendEmail["friendList"].push(user);
 
-    console.log(user["friendList"]);
+    // console.log(user["friendList"]);
     res.redirect("/reminder/friends");
   },
 

@@ -18,7 +18,7 @@ module.exports = function(req, res, next){
             console.log(err);
             res.render("auth/login");
         }else{
-            console.log(result);
+            // console.log(result);
             next();
         }
     });

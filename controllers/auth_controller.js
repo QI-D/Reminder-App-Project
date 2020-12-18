@@ -77,7 +77,7 @@ let authController = {
 
     newUser.save()
       .then(() => {
-        console.log("saved.");
+        // console.log("saved.");
         req.session["user"] = email;
         // create an empty reminder record and friends List record
       })
