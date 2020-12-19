@@ -186,7 +186,7 @@ let remindersController = {
 
         return [subTaskArr, tagsArr];
       })
-      .then( async function([subTaskArr, tagsArr]){
+      .then(async function ([subTaskArr, tagsArr]) {
         const newReminder = await new reminder({
           email: req.session['user'],
           title: req.body.title,
@@ -219,6 +219,7 @@ let remindersController = {
 
   listOne: function (req, res) {
 
+    //////////////////////////////////
     // let reminderToFind = req.params.id;
     // let user = Database[req.session.user];
 
@@ -235,7 +236,25 @@ let remindersController = {
     // } else {
     //   res.redirect("/reminders");
     // }
-    console.log("list One!");
+
+    //////////////////////////////////
+
+    // console.log("list One!");
+    let reminderToFind = req.params.id;
+
+    //find the reminder in reminders collection
+    reminder.findById(reminderToFind)
+      .then(reminderDoc => {
+        if (reminderDoc) {
+          res.render("reminder/single-reminder", {
+            reminderItem: reminderDoc.toObject(),
+          });
+        } else {
+          res.redirect("/reminders");
+        }
+
+      })
+      .catch(err => console.log(err));
   },
 
   edit: function (req, res) {
