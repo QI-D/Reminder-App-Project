@@ -1,5 +1,5 @@
 // const Database = require("../database.js");
-const Database=require("../index").connection;
+// const Database=require("../index").connection;
 
 let user=require("../models/mongoose/user").userModel;
 // const mongoose=require("mongoose");
@@ -13,7 +13,7 @@ module.exports = function(req, res, next){
     // } else {
     //     res.render("auth/login");
     // }
-    user.find({'email':req.session.user},(err,result)=>{
+    user.findOne({'email':req.session.user},(err,result)=>{
         if(err){
             console.log(err);
             res.render("auth/login");

@@ -1,5 +1,5 @@
 // let database = require("../database");
-let database = require("../index").connection;
+// let database = require("../index").connection;
 // const { MakeUser } = require("../make-data.js");
 const { getPhoto } = require("./unsplashAPI_controller");
 // const mongoose=require("mongoose");
@@ -19,27 +19,53 @@ let authController = {
     res.render("auth/login");
   },
 
-  loginSubmit: (req, res) => {
+  loginSubmit: async (req, res) => {
     // implement
-    let email = req.body.email;
-    let password = req.body.password;
+    let email = await req.body.email;
+    let password = await req.body.password;
 
-    console.log("login", req.body);
+    /////////////////////////////////////////////
+    // console.log("login", req.body);
 
-    if (database.hasOwnProperty(email)) {
-      if (database[email].password === password) {
-        req.session["user"] = email;
-        res.redirect("/reminders");
-      } else {
+    // if (database.hasOwnProperty(email)) {
+    //   if (database[email].password === password) {
+    //     req.session["user"] = email;
+    //     res.redirect("/reminders");
+    //   } else {
+    //     res.render("auth/login", {
+    //       err: "password is not correct",
+    //     });
+    //   }
+    // } else {
+    //   res.render("auth/login", {
+    //     err: "The email does not exist",
+    //   });
+    // }
+    ////////////////////////////////////////////
+
+
+    await user.findOne({ email: email })
+      .then(userDoc => {
+        if (userDoc.password === password) {
+          req.session["user"] = email;
+          res.redirect("/reminders");
+
+        } else {
+          res.render("auth/login", {
+            err: "password is not correct",
+          });
+
+        }
+
+      })
+      .catch(err => {
+        console.log(err);
         res.render("auth/login", {
-          err: "password is not correct",
+          err: "The email does not exist",
         });
-      }
-    } else {
-      res.render("auth/login", {
-        err: "The email does not exist",
+
       });
-    }
+
   },
 
   register: (req, res) => {
@@ -81,7 +107,7 @@ let authController = {
         req.session["user"] = email;
         // create an empty reminder record and friends List record
       })
-      .then(()=>res.redirect("/reminders"))
+      .then(() => res.redirect("/reminders"))
       .catch(err => {
         console.log(err);
         return;
