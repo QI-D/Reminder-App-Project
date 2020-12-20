@@ -299,53 +299,115 @@ let remindersController = {
 
   showfriend: function (req, res) {
     res.locals.url = req.url;
-    let user = Database[req.session.user];
-    let friends = user["friendList"];
+    ///////////////////////////
+    // let user = Database[req.session.user];
+    // let friends = user["friendList"];
+    // res.render("reminder/friends", {
+    //   userfriends: friends
+    // });
+    /////////////////////////
+    
+    Database.findOne({email:req.session.user})
+    .then(async user=>{
+      let friends = await user["friendList"];
+      res.render("reminder/friends", {
+        userfriends: friends
+      });
 
-    res.render("reminder/friends", {
-      userfriends: friends
-    });
+    })
+    .catch(err=>console.log(err));
+
+    
   },
 
-  addfriend: function (req, res) {
+  addfriend: async function (req, res) {
     // let buttonclicked=req.body.add;
 
     // console.log(buttonclicked);
 
 
     res.locals.url = req.url;
-    friendEmail = req.body.friendEmail;
-    // console.log("email", req.body);
-    let user = Database[req.session.user]
-    let useremail = req.session.user
+    let friendEmail = await req.body.friendEmail;
 
-    if (user.friendList.includes(friendEmail)) {
-      res.render("reminder/friends", {
-        err: "The email has already been added",
-        userfriends: user.friendList
-      });
-    } else if (friendEmail == useremail) {
-      res.render("reminder/friends", {
-        err: "You cannot add yourself",
-        userfriends: user.friendList
-      });
-    } else {
-      if (Database.hasOwnProperty(friendEmail)) {
-        user.friendList.push(friendEmail);
-        Database[friendEmail].friendList.push(useremail);
-      } else {
-        res.render("reminder/friends", {
-          err: "Email does not exist",
-          userfriends: user.friendList
-        });
-      }
-    }
+    ////////////////////////////////////////////////
+    // let friendEmail = req.body.friendEmail;
+    // console.log("email", req.body);
+    // let user = Database[req.session.user]
+    // let useremail = req.session.user
+
+    // if (user.friendList.includes(friendEmail)) {
+    //   res.render("reminder/friends", {
+    //     err: "The email has already been added",
+    //     userfriends: user.friendList
+    //   });
+    // } else if (friendEmail == useremail) {
+    //   res.render("reminder/friends", {
+    //     err: "You cannot add yourself",
+    //     userfriends: user.friendList
+    //   });
+    // } else {
+    //   if (Database.hasOwnProperty(friendEmail)) {
+    //     user.friendList.push(friendEmail);
+    //     Database[friendEmail].friendList.push(useremail);
+    //   } else {
+    //     res.render("reminder/friends", {
+    //       err: "Email does not exist",
+    //       userfriends: user.friendList
+    //     });
+    //   }
+    // }
+    // res.redirect("/reminder/friends");
+    ////////////////////////////////////////////
 
     // The database must have that user with the friendEmail
     // Database.friendEmail["friendList"].push(user);
 
     // console.log(user["friendList"]);
-    res.redirect("/reminder/friends");
+
+    
+    let userEmail = await req.session.user;
+    Database.findOne({ email: userEmail })
+      .then(user => {
+
+        if (user.friendList.includes(friendEmail)) {
+          res.render("reminder/friends", {
+            err: "The email has already been added",
+            // user.friendList now is a list of friend email
+            // need to use the email to find its reminders 
+            userfriends: user.friendList
+          });
+        } else if (friendEmail == userEmail) {
+          res.render("reminder/friends", {
+            err: "You cannot add yourself",
+            userfriends: user.friendList
+          });
+        } else {
+          Database.findOne({ email: friendEmail }, async (err, friendDoc) => {
+            if (err) {
+              console.log(err);
+              return;
+            } else {
+              if (friendDoc) {
+                await user.friendList.push(friendEmail);
+                await friendDoc.friendList.push(userEmail);
+                user.save();
+                friendDoc.save();
+
+              } else {
+                res.render("reminder/friends", {
+                  err: "Email does not exist",
+                  userfriends: user.friendList
+                });
+              }
+            }
+          });
+        }
+
+        res.redirect("/reminder/friends");
+      })
+      .catch(err => console.log(err));
+
+
   },
 
   removeFriend: function (req, res) {
