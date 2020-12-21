@@ -78,53 +78,53 @@ let remindersController = {
 
       })
       .catch(err => console.log(err));
-      // .then(([friendsList,photo]) => {
-      //   let remindersList = [];
-      //   reminder.find({ email: req.session['user'] }, (err, docs) => {
-      //     console.log("docs:",docs);
-      //     if (err) {
-      //       console.log(err);
-      //       return;
-      //     } else {
-      //       // console.log("docs:", docs);
+    // .then(([friendsList,photo]) => {
+    //   let remindersList = [];
+    //   reminder.find({ email: req.session['user'] }, (err, docs) => {
+    //     console.log("docs:",docs);
+    //     if (err) {
+    //       console.log(err);
+    //       return;
+    //     } else {
+    //       // console.log("docs:", docs);
 
-      //       docs.forEach(doc => {
-      //         remindersList.push(doc.toObject());
-      //       });
+    //       docs.forEach(doc => {
+    //         remindersList.push(doc.toObject());
+    //       });
 
-      //     }
+    //     }
 
-      //   });
+    //   });
 
-      //   return [remindersList, friendsList,photo];
-      // })
-      // .then(([friendsList, photo]) => {
+    //   return [remindersList, friendsList,photo];
+    // })
+    // .then(([friendsList, photo]) => {
 
-      // console.log([remindersList, friendsList,photo]);
+    // console.log([remindersList, friendsList,photo]);
 
-      // let remindersList = [];
-      // reminder.find({ email: req.session['user'] }, (err, docs) => {
-      // console.log("docs:", docs);
-      // if (err) {
-      //   console.log(err);
-      //   return;
-      // } else {
-      // console.log("docs:", docs);
+    // let remindersList = [];
+    // reminder.find({ email: req.session['user'] }, (err, docs) => {
+    // console.log("docs:", docs);
+    // if (err) {
+    //   console.log(err);
+    //   return;
+    // } else {
+    // console.log("docs:", docs);
 
-      //       docs.forEach(doc => {
-      //         remindersList.push(doc.toObject());
-      //       });
-      //       res.render("reminder/index", {
-      //         reminders: remindersList,
-      //         others: friendsList,
-      //         photoUrl: photo
-      //       });
+    //       docs.forEach(doc => {
+    //         remindersList.push(doc.toObject());
+    //       });
+    //       res.render("reminder/index", {
+    //         reminders: remindersList,
+    //         others: friendsList,
+    //         photoUrl: photo
+    //       });
 
-      //     }
+    //     }
 
-      //   });
-      // })
-      
+    //   });
+    // })
+
   },
 
   new: function (req, res) {
@@ -452,22 +452,36 @@ let remindersController = {
     let friendEmail = req.params.email;
     let reminderToFind = req.params.id;
     // let userEmail = req.session.user;
-    console.log("friend email: ", friendEmail);
-    console.log("id: ", reminderToFind);
+    // console.log("friend email: ", friendEmail);
+    // console.log("id: ", reminderToFind);
 
-    let searchResult = Database[friendEmail].reminders.find(
-      (reminder) => {
-        return reminder.id == reminderToFind;
+    // let searchResult = Database[friendEmail].reminders.find(
+    //   (reminder) => {
+    //     return reminder.id == reminderToFind;
+    //   }
+    // );
+
+
+    // res.render("reminder/single-reminder", {
+    //   reminderItem: searchResult,
+    //   // userEmail:userEmail
+    //   friendEmail: friendEmail
+
+    // });
+
+    reminder.findById(reminderToFind)
+      .then(reminderDoc => {
+        res.render("reminder/single-reminder", {
+          reminderItem: reminderDoc.toObject(),
+          // userEmail:userEmail
+          friendEmail: friendEmail
+
+        });
+
       }
-    );
 
-
-    res.render("reminder/single-reminder", {
-      reminderItem: searchResult,
-      // userEmail:userEmail
-      friendEmail: friendEmail
-
-    });
+      )
+      .catch(err => console.log(err));
   },
 };
 
