@@ -6,7 +6,8 @@ const reminderSchema=new mongoose.Schema({
     email:String,
     title:String,
     description:String,
-    completed:Boolean,
+    completed:{ type: Boolean, default: false },
+    photo:String,
     subtask:{ type: Array, default: [] },
     tag:{ type: Array, default: [] },
     time:{ type: Number, default: Date.now() }
