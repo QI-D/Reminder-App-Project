@@ -10,7 +10,7 @@ const reminderSchema=new mongoose.Schema({
     photo:String,
     subtask:{ type: Array, default: [] },
     tag:{ type: Array, default: [] },
-    time:{ type: Number, default: Date.now() }
+    time:{ type: String, default: new Date().toISOString() }
 });
 
 module.exports.reminderModel=mongoose.model("Reminder",reminderSchema);

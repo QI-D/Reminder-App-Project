@@ -1,7 +1,7 @@
 const { MakeReminder, MakeSubtask, MakeTag } = require("../make-data.js");
 // const Database = require("../database.js");
-let Database = require("../models/mongoose/user").userModel;
-let reminder = require("../models/mongoose/reminder").reminderModel;
+let userDatabase = require("../models/mongoose/user").userModel;
+let reminderDatabase = require("../models/mongoose/reminder").reminderModel;
 const url = require("url");
 
 // exstract functions
@@ -30,14 +30,14 @@ let remindersController = {
 
     ///////////////////////////////////////
     // real database version
-    Database.findOne({ email: req.session['user'] })
+    userDatabase.findOne({ email: req.session['user'] })
       .then(user => {
         let friends = user.friendList;
         // console.log(friends);
         let friendsList = [];
         let remindersList = [];
 
-        reminder.find({ email: { $in: friends } }, (err, friendDocs) => {
+        reminderDatabase.find({ email: { $in: friends } }, (err, friendDocs) => {
           if (err) {
             console.log(err);
             return;
@@ -47,7 +47,7 @@ let remindersController = {
 
             });
 
-            reminder.find({ email: req.session['user'] }, (err, docs) => {
+            reminderDatabase.find({ email: req.session['user'] }, (err, docs) => {
               // console.log("docs:", docs);
               if (err) {
                 console.log(err);
@@ -170,7 +170,7 @@ let remindersController = {
 
     // console.log("back to /reminders page");
 
-    Database.findOne({ email: req.session['user'] })
+    userDatabase.findOne({ email: req.session['user'] })
       .then(user => {
         const subTaskArr = [];
         const tagsArr = [];
@@ -193,7 +193,7 @@ let remindersController = {
         return [subTaskArr, tagsArr, user.photo];
       })
       .then(async function ([subTaskArr, tagsArr, photoUrl]) {
-        const newReminder = await new reminder({
+        const newReminder = await new reminderDatabase({
           email: req.session['user'],
           title: req.body.title,
           description: req.body.description,
@@ -208,7 +208,7 @@ let remindersController = {
       })
       .then(newReminder => {
         //update user.reminders
-        Database.updateOne({ email: req.session['user'] },
+        userDatabase.updateOne({ email: req.session['user'] },
           { $push: { reminders: newReminder._id } }, (err) => {
             if (err) {
               console.log(err);
@@ -250,7 +250,7 @@ let remindersController = {
     let reminderToFind = req.params.id;
 
     //find the reminder in reminders collection
-    reminder.findById(reminderToFind)
+    reminderDatabase.findById(reminderToFind)
       .then(reminderDoc => {
         if (reminderDoc) {
           res.render("reminder/single-reminder", {
@@ -265,7 +265,7 @@ let remindersController = {
   },
 
   edit: function (req, res) {
-    let user = Database[req.session.user];
+    let user = userDatabase[req.session.user];
     let reminderToFind = req.params.id;
 
     let searchResult = user.reminders.find(
@@ -280,7 +280,7 @@ let remindersController = {
 
   update: function (req, res) {
     const reminder_id = req.params.id;
-    let user = Database[req.session.user];
+    let user = userDatabase[req.session.user];
 
     user.reminders.find((reminder) => {
       if (reminder.id == reminder_id) {
@@ -295,7 +295,7 @@ let remindersController = {
 
   delete: function (req, res) {
     let deleteId = req.params.id;
-    let user = Database[req.session.user];
+    let user = userDatabase[req.session.user];
 
     let idx = user.reminders.findIndex((reminder) => {
       return reminder.id == deleteId;
@@ -314,7 +314,7 @@ let remindersController = {
     // });
     /////////////////////////
 
-    Database.findOne({ email: req.session.user })
+    userDatabase.findOne({ email: req.session.user })
       .then(async user => {
         let friends = await user["friendList"];
         res.render("reminder/friends", {
@@ -373,7 +373,7 @@ let remindersController = {
 
 
     let userEmail = await req.session.user;
-    Database.findOne({ email: userEmail })
+    userDatabase.findOne({ email: userEmail })
       .then(user => {
 
         if (user.friendList.includes(friendEmail)) {
@@ -389,7 +389,7 @@ let remindersController = {
             userfriends: user.friendList
           });
         } else {
-          Database.findOne({ email: friendEmail }, async (err, friendDoc) => {
+          userDatabase.findOne({ email: friendEmail }, async (err, friendDoc) => {
             if (err) {
               console.log(err);
               return;
@@ -422,7 +422,7 @@ let remindersController = {
 
     friendEmail = req.body.friendEmail;
     // console.log("email", req.body);
-    let user = Database[req.session.user]
+    let user = userDatabase[req.session.user]
     let useremail = req.session.user
 
     if (user.friendList.includes(friendEmail)) {
@@ -469,7 +469,7 @@ let remindersController = {
 
     // });
 
-    reminder.findById(reminderToFind)
+    reminderDatabase.findById(reminderToFind)
       .then(reminderDoc => {
         res.render("reminder/single-reminder", {
           reminderItem: reminderDoc.toObject(),
