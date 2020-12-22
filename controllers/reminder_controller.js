@@ -185,8 +185,14 @@ let remindersController = {
 
         // Check if the tag req exist
         if (reminder_tag) {
-          reminder_tag.forEach((description, tag_id) => {
-            tagsArr.push(new MakeTag(tag_id, description));
+          // reminder_tag.forEach((description, tag_id) => {
+          
+          reminder_tag.forEach(async (description,index) => {
+            
+            let tagId = await new Date().getTime() + index;
+            // console.log(tagId);
+            await tagsArr.push(new MakeTag(user._id + "_" + tagId, description));
+            
           });
         }
 

@@ -2,7 +2,7 @@ const { MakeTag } = require("../make-data.js");
 
 // const Database = require("../database.js");
 
-let reminderDatabase=require("../models/mongoose/reminder").reminderModel;
+let reminderDatabase = require("../models/mongoose/reminder").reminderModel;
 
 let tagController = {
   add: function (req, res) {
@@ -18,7 +18,7 @@ let tagController = {
     // });
 
     // let searchReminder = user.reminders[searchResultID];
-    
+
     // console.log(searchReminder);
     // let newtag = new MakeTag(searchReminder.tag.length + 1, tagName);
     // {
@@ -31,33 +31,48 @@ let tagController = {
     // res.redirect("/reminder/" + tagID);
     //////////////////////////////////////
 
-    reminderDatabase.findOne({ email: req.session.user})
-    .then(async reminderDoc=>{
-      let newtag = await new MakeTag(reminderDoc.tag.length + 1, tagName);
-      await reminderDoc.tag.push(newtag);
-      await reminderDoc.save();
-      
-      res.redirect("/reminder/" + tagID);
+    reminderDatabase.findById(tagID)
+      .then(async reminderDoc => {
+        let newtag = await new MakeTag(tagID + "_" + new Date().getTime(), tagName);
+        await reminderDoc.tag.push(newtag);
+        await reminderDoc.save();
 
-    })
-    .catch(err=>console.log(err));
+        res.redirect("/reminder/" + tagID);
+
+      })
+      .catch(err => console.log(err));
   },
 
   delete: function (req, res) {
     let deleteId = req.params.id;
     let tagId = req.body.id;
-    let user = Database[req.session.user];
+    console.log(tagId);
 
-    let searchResult = user.reminders.find((reminder) => {
-      return reminder.id == deleteId;
-    });
+    ////////////////////////////
+    // old 
+    // let user = Database[req.session.user];
 
-    let searchtagID = searchResult.tag.findIndex((tag) => {
-      return tag.id == tagId;
-    });
+    // let searchResult = user.reminders.find((reminder) => {
+    //   return reminder.id == deleteId;
+    // });
 
-    searchResult.tag.splice(searchtagID, 1);
-    res.redirect("/reminder/" + deleteId);
+    // let searchtagID = searchResult.tag.findIndex((tag) => {
+    //   return tag.id == tagId;
+    // });
+
+    // searchResult.tag.splice(searchtagID, 1);
+    // res.redirect("/reminder/" + deleteId);
+    //////////////////////////////
+
+    reminderDatabase.updateOne({ _id: deleteId }, { $pull: { tag: { id: tagId } } })
+      .then( ()=> {
+        // await reminderDoc.tag.splice(tagId,1);
+
+        // await reminderDoc.save();
+        res.redirect("/reminder/" + deleteId);
+
+      })
+      .catch(err => console.log(err));
   },
 };
 
