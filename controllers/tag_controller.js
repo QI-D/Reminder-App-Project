@@ -1,29 +1,46 @@
 const { MakeTag } = require("../make-data.js");
 
-const Database = require("../database.js");
+// const Database = require("../database.js");
+
+let reminderDatabase=require("../models/mongoose/reminder").reminderModel;
 
 let tagController = {
   add: function (req, res) {
     let tagName = req.body.tag_name;
     let tagID = req.params.id;
-    let user = Database[req.session.user];
 
-    let searchResultID = user.reminders.findIndex((reminder) => {
-      return reminder.id == tagID;
-    });
+    /////////////////////////////////////
+    // old version
+    // let user = Database[req.session.user];
 
-    let searchReminder = user.reminders[searchResultID];
+    // let searchResultID = user.reminders.findIndex((reminder) => {
+    //   return reminder.id == tagID;
+    // });
+
+    // let searchReminder = user.reminders[searchResultID];
     
-    console.log(searchReminder);
-    let newtag = new MakeTag(searchReminder.tag.length + 1, tagName);
+    // console.log(searchReminder);
+    // let newtag = new MakeTag(searchReminder.tag.length + 1, tagName);
     // {
     //   id: searchReminder.tag.length + 1,
     //   name: tagName
     // };
 
-    searchReminder.tag.push(newtag);
+    // searchReminder.tag.push(newtag);
 
-    res.redirect("/reminder/" + tagID);
+    // res.redirect("/reminder/" + tagID);
+    //////////////////////////////////////
+
+    reminderDatabase.findOne({ email: req.session.user})
+    .then(async reminderDoc=>{
+      let newtag = await new MakeTag(reminderDoc.tag.length + 1, tagName);
+      await reminderDoc.tag.push(newtag);
+      await reminderDoc.save();
+      
+      res.redirect("/reminder/" + tagID);
+
+    })
+    .catch(err=>console.log(err));
   },
 
   delete: function (req, res) {
