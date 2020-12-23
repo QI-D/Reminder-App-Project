@@ -178,8 +178,10 @@ let remindersController = {
         const { reminder_subtask, reminder_tag } = req.body;
         // Check if the subtask req exist
         if (reminder_subtask) {
-          reminder_subtask.forEach((description, subtask_id) => {
-            subTaskArr.push(new MakeSubtask(subtask_id, description));
+          reminder_subtask.forEach(async (description, subtask_id) => {
+
+            let subtaskId = await new Date().getTime() + subtask_id;
+            subTaskArr.push(new MakeSubtask(user._id + "_" + subtaskId, description));
           });
         }
 
