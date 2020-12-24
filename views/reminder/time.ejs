@@ -2,7 +2,7 @@
     <h5 class="page-subheader">REMIND ME</h5>
 
     <form action="/reminder/<%= reminderItem._id %>/time/update" method="POST">
-        <input onchange="this.form.submit()" type="datetime-local" class="form-control col-5" name="time" value=<%= reminderItem.time %>>
+        <input onblur="this.form.submit()" type="datetime-local" class="form-control col-5" name="time" value=<%= reminderItem.time %>>
     </form>
     
 
