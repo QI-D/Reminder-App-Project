@@ -1,5 +1,6 @@
 const { MakeReminder, MakeSubtask, MakeTag } = require("../make-data.js");
 // const Database = require("../database.js");
+let mongoose = require('mongoose');
 let userDatabase = require("../models/mongoose/user").userModel;
 let reminderDatabase = require("../models/mongoose/reminder").reminderModel;
 const url = require("url");
@@ -323,12 +324,12 @@ let remindersController = {
     reminderDatabase.findById(reminderToFind)
       .then(
         async reminderDoc => {
-          reminderDoc.title=req.body.title;
-          reminderDoc.description=req.body.description;
-          reminderDoc.completed=req.body.completed=="true";
+          reminderDoc.title = req.body.title;
+          reminderDoc.description = req.body.description;
+          reminderDoc.completed = req.body.completed == "true";
           await reminderDoc.save();
-          await res.redirect("/reminder/" + req.body.id); 
-          
+          await res.redirect("/reminder/" + req.body.id);
+
         }
       )
       .catch(err => console.log(err));
@@ -336,14 +337,29 @@ let remindersController = {
   },
 
   delete: function (req, res) {
-    let deleteId = req.params.id;
-    let user = userDatabase[req.session.user];
+    //////////////////////////////
+    // old version
+    // let deleteId = req.params.id;
+    // let user = userDatabase[req.session.user];
 
-    let idx = user.reminders.findIndex((reminder) => {
-      return reminder.id == deleteId;
-    });
-    user.reminders.splice(idx, 1);
-    res.redirect("/reminders");
+    // let idx = user.reminders.findIndex((reminder) => {
+    //   return reminder.id == deleteId;
+    // });
+    // user.reminders.splice(idx, 1);
+    // res.redirect("/reminders");
+    ///////////////////////////////
+
+    let deleteId = req.params.id;
+    reminderDatabase.findOneAndDelete({ _id: deleteId })
+      .then(
+        async () => {
+          await userDatabase.update({ email:req.session.user },{ $pull: { reminders: mongoose.Types.ObjectId(deleteId) }})
+
+          await res.redirect("/reminders");
+        }
+      )
+      .catch(err => console.log(err));
+
   },
 
   showfriend: function (req, res) {
