@@ -188,13 +188,13 @@ let remindersController = {
         // Check if the tag req exist
         if (reminder_tag) {
           // reminder_tag.forEach((description, tag_id) => {
-          
-          reminder_tag.forEach(async (description,index) => {
-            
+
+          reminder_tag.forEach(async (description, index) => {
+
             let tagId = await new Date().getTime() + index;
             // console.log(tagId);
             await tagsArr.push(new MakeTag(user._id + "_" + tagId, description));
-            
+
           });
         }
 
@@ -273,32 +273,66 @@ let remindersController = {
   },
 
   edit: function (req, res) {
-    let user = userDatabase[req.session.user];
-    let reminderToFind = req.params.id;
 
-    let searchResult = user.reminders.find(
-      (reminder) => {
-        return reminder.id == reminderToFind;
-      }
-    );
-    res.render("reminder/edit-reminder", {
-      reminderItem: searchResult,
-    });
+    //////////////////////////
+    // old version
+    // let user = userDatabase[req.session.user];
+    // let reminderToFind = req.params.id;
+
+    // let searchResult = user.reminders.find(
+    //   (reminder) => {
+    //     return reminder.id == reminderToFind;
+    //   }
+    // );
+    // res.render("reminder/edit-reminder", {
+    //   reminderItem: searchResult,
+    // });
+
+    ///////////////////////////
+
+    let reminderToFind = req.params.id;
+    reminderDatabase.findById(reminderToFind)
+      .then(
+        reminderDoc => {
+          res.render("reminder/edit-reminder", {
+            reminderItem: reminderDoc,
+          });
+        }
+      )
+      .catch(err => console.log(err));
   },
 
   update: function (req, res) {
-    const reminder_id = req.params.id;
-    let user = userDatabase[req.session.user];
+    //////////////////////////////
+    // old version
+    // const reminder_id = req.params.id;
+    // let user = userDatabase[req.session.user];
 
-    user.reminders.find((reminder) => {
-      if (reminder.id == reminder_id) {
-        (reminder.title = req.body.title),
-          (reminder.description = req.body.description),
-          (reminder.completed = req.body.completed == "true");
-      }
-    });
+    // user.reminders.find((reminder) => {
+    //   if (reminder.id == reminder_id) {
+    //     (reminder.title = req.body.title),
+    //       (reminder.description = req.body.description),
+    //       (reminder.completed = req.body.completed == "true");
+    //   }
+    // });
 
-    res.redirect("/reminder/" + req.body.id); // this should be routes in index.js with redirects
+    // res.redirect("/reminder/" + req.body.id); // this should be routes in index.js with redirects
+    ////////////////////////////
+
+    let reminderToFind = req.params.id;
+    reminderDatabase.findById(reminderToFind)
+      .then(
+        async reminderDoc => {
+          reminderDoc.title=req.body.title;
+          reminderDoc.description=req.body.description;
+          reminderDoc.completed=req.body.completed=="true";
+          await reminderDoc.save();
+          await res.redirect("/reminder/" + req.body.id); 
+          
+        }
+      )
+      .catch(err => console.log(err));
+
   },
 
   delete: function (req, res) {
