@@ -353,7 +353,7 @@ let remindersController = {
     reminderDatabase.findOneAndDelete({ _id: deleteId })
       .then(
         async () => {
-          await userDatabase.update({ email:req.session.user },{ $pull: { reminders: mongoose.Types.ObjectId(deleteId) }})
+          await userDatabase.updateOne({ email: req.session.user }, { $pull: { reminders: mongoose.Types.ObjectId(deleteId) } })
 
           await res.redirect("/reminders");
         }
@@ -475,34 +475,68 @@ let remindersController = {
 
   },
 
-  removeFriend: function (req, res) {
+  removeFriend: async function (req, res) {
     res.locals.url = req.url;
+    //////////////////////////
+    //old version
+    // friendEmail = req.body.friendEmail;
+    // // console.log("email", req.body);
+    // let user = userDatabase[req.session.user]
+    // let useremail = req.session.user
 
-    friendEmail = req.body.friendEmail;
-    // console.log("email", req.body);
-    let user = userDatabase[req.session.user]
-    let useremail = req.session.user
+    // if (user.friendList.includes(friendEmail)) {
+    //   let idx = user.friendList.findIndex((email) => {
+    //     return email == friendEmail;
+    //   });
+    //   user.friendList.splice(idx, 1);
+    //   // res.render("reminder/friends", {
+    //   //   userfriends: user.friendList
+    //   // });
+    //   res.redirect("/reminder/friends");
+    // } else if (friendEmail == useremail) {
+    //   res.render("reminder/friends", {
+    //     err: "You cannot delete yourself",
+    //     userfriends: user.friendList
+    //   });
+    // } else {
+    //   res.render("reminder/friends", {
+    //     err: "Email does not exist",
+    //     userfriends: user.friendList
+    //   });
 
-    if (user.friendList.includes(friendEmail)) {
-      let idx = user.friendList.findIndex((email) => {
-        return email == friendEmail;
-      });
-      user.friendList.splice(idx, 1);
-      // res.render("reminder/friends", {
-      //   userfriends: user.friendList
-      // });
-      res.redirect("/reminder/friends");
-    } else if (friendEmail == useremail) {
-      res.render("reminder/friends", {
-        err: "You cannot delete yourself",
-        userfriends: user.friendList
-      });
-    } else {
-      res.render("reminder/friends", {
-        err: "Email does not exist",
-        userfriends: user.friendList
-      });
-    }
+    // }
+    ///////////////////////////
+
+    let delFriendEmail = await req.body.friendEmail;
+    let userEmail = await req.session.user;
+
+    userDatabase.findOne({ email: req.session.user })
+      .then(
+        async userDoc => {
+          if (delFriendEmail === userEmail) {
+            res.render("reminder/friends", {
+              err: "You cannot delete yourself",
+              userfriends: userDoc.friendList
+            });
+
+          } else if (userDoc.friendList.includes(delFriendEmail)) {
+            await userDatabase.updateOne({ email: req.session.user }, { $pull: { friendList: delFriendEmail } });
+            await userDatabase.updateOne({ email: delFriendEmail }, { $pull: { friendList: userEmail } });
+            await res.redirect("/reminder/friends");
+
+          } else {
+            res.render("reminder/friends", {
+              err: "Email does not exist",
+              userfriends: userDoc.friendList
+            });
+
+          }
+
+        }
+
+      )
+      .catch(err => console.log(err));
+
   },
 
 

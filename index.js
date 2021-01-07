@@ -46,7 +46,7 @@ app.get("/reminder/friends", authCheck, reminderController.showfriend);
 
 app.post("/reminder/friends", authCheck, buttonCheck);
 
-// app.post("/reminder/friends",authCheck,reminderController.removeFriend);
+app.post("/reminder/friends",authCheck,reminderController.removeFriend);
 
 //Case 2: User goes to Localhost:8080/reminder -> show a list of reminders
 app.get("/reminders/", authCheck, reminderController.list);
