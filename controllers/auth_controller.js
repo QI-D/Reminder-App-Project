@@ -21,8 +21,8 @@ let authController = {
 
   loginSubmit: async (req, res) => {
     // implement
-    let email = await req.body.email;
-    let password = await req.body.password;
+    let userEmail = await req.body.email;
+    let userPassword = await req.body.password;
 
     /////////////////////////////////////////////
     // console.log("login", req.body);
@@ -44,10 +44,10 @@ let authController = {
     ////////////////////////////////////////////
 
 
-    await user.findOne({ email: email })
+    await user.findOne({ email: userEmail })
       .then(userDoc => {
-        if (userDoc.password === password) {
-          req.session["user"] = email;
+        if (userDoc.password === userPassword) {
+          req.session["user"] = userEmail;
           res.redirect("/reminders");
 
         } else {
