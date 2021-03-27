@@ -113,14 +113,14 @@ tagApp.deletePost(app);
 
 //========= Youtube Api =======
 
-// Case 1: User wants to search for youtube videos
-youtubeApp.get(app, authCheck);
+// // Case 1: User wants to search for youtube videos
+// youtubeApp.get(app, authCheck);
 
-// Case 2: User gets youtube videos
-youtubeApp.post(app, authCheck);
+// // Case 2: User gets youtube videos
+// youtubeApp.post(app, authCheck);
 
-// Case 3: User wants add their favorite videos
-youtubeApp.add(app, authCheck);
+// // Case 3: User wants add their favorite videos
+// youtubeApp.add(app, authCheck);
 
 // web service request through port 3000
 app.listen(3000, () => {
