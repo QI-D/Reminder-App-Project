@@ -36,7 +36,7 @@ app.use(
 
 //Case 1: user goes to localhost: 8080 -> information about site, marketing, login page ...
 app.get("/", (req, res) => {
-  res.send("Go to http://localhost:3000/reminders");
+  res.send("Go to http://localhost:8080/reminders");
 });
 
 // Case xxx: friends
@@ -128,8 +128,8 @@ tagApp.deletePost(app);
 // // Case 3: User wants add their favorite videos
 // youtubeApp.add(app);
 
-const port = process.env.PORT || 8080
-const dbUrl = process.env.MONGO_DB_URL || 'mongodb://localhost:27017'
+const port = process.env.PORT || 8080;
+const dbUrl = process.env.MONGO_DB_URL || 'mongodb://localhost:27017';
 
 module.exports.connection=mongoose.connect(dbUrl,{ useNewUrlParser: true, useUnifiedTopology: true },(err)=>{
   if(err){

@@ -1,5 +1,6 @@
 const fetch = require("node-fetch");
-const Database = require("../database.js");
+
+
 
 let unsplashAPIController = {
   
