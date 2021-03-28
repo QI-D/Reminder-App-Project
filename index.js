@@ -19,8 +19,6 @@ const youtubeApp = require("./youtubeAPI");
 
 // mongodb
 let mongoose=require("mongoose");
-const dbUrl="mongodb+srv://user:214300@cluster0.atxvw.mongodb.net/<dbname>?retryWrites=true&w=majority";
-
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: false }));
@@ -121,14 +119,17 @@ tagApp.deletePost(app);
 
 //========= Youtube Api =======
 
-// Case 1: User wants to search for youtube videos
-youtubeApp.get(app);
+// // Case 1: User wants to search for youtube videos
+// youtubeApp.get(app);
 
-// Case 2: User gets youtube videos
-youtubeApp.post(app);
+// // Case 2: User gets youtube videos
+// youtubeApp.post(app);
 
-// Case 3: User wants add their favorite videos
-youtubeApp.add(app);
+// // Case 3: User wants add their favorite videos
+// youtubeApp.add(app);
+
+const port = process.env.PORT || 8080
+const dbUrl = process.env.MONGO_DB_URL || 'mongodb://localhost:27017'
 
 module.exports.connection=mongoose.connect(dbUrl,{ useNewUrlParser: true, useUnifiedTopology: true },(err)=>{
   if(err){
@@ -136,15 +137,10 @@ module.exports.connection=mongoose.connect(dbUrl,{ useNewUrlParser: true, useUni
   }else{
     console.log('a user connected');
     // web service request through port 3000
-    app.listen(3000, () => {
-      console.log("Our server is running on http://localhost:3000/ 🚀");
+    app.listen(port, () => {
+      console.log(`Our server is running on port ${port}`);
     });
 
   }
   
 });
-
-// web service request through port 3000
-// app.listen(3000, () => {
-//   console.log("Our server is running on http://localhost:3000/ 🚀");
-// });
